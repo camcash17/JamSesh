@@ -16,22 +16,16 @@ Based on the initial logic defined in the previous game phases section try and b
 
 ## Time Frames
 | Component | Priority | Estimated Time | Time Invested | Actual Time |
+| --- | :---: |  :---: | :---: | :---: |
 | Database Setup | H | 3hrs | 2hrs | 2hrs |
 | Crud Functionality | H | 3hrs | 3hrs | 3hrs |
 | API Implementation | H | 3hrs | 5hrs | 5hrs |
 | Styling | H | 4hrs | 5hrs | 5hrs |
 
-| Component | Priority | Estimated Time | Time Invested | Actual Time |
-| --- | :---: |  :---: | :---: | :---: |
-| Component 1 | H | 10hrs| 12hrs | 12hrs |
-
 ## Helper Functions
 | Function | Description |
-| axios.get(`http://173.2.2.152:3000/api/artists`) | API Call to receive data from Rails backend database |
-
-| Function | Description |
 | --- | :---: |  
-| Capitalize | This will capitalize the first letter in a string | 
+| axios.get(`http://173.2.2.152:3000/api/artists`) | API Call to receive data from Rails backend database |
 
 ## Additional Libraries/Frameworks
 * React Native
