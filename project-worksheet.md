@@ -1,84 +1,50 @@
-# Project Overview
+# JamSesh
 
-## Project Schedule
+## Description
+JamSesh is a mobile app built using React Native with a Rails backend. It incorporates a Songkick API as well as Google Maps API. With JamSesh the user is able to search their favorite artists and view their upcoming event calendar if they are currently on tour. The user is then able to view the location of the concert venue on a displayed map component. Other functionalities including adding and deleting artists to a favorited list.
 
-This schedule will be used to keep track of your progress throughout the week and align with our expectations.  
+## [Wireframes, Priority Matrix, MVP & POST MVP](http://res.cloudinary.com/camcash17/image/upload/v1519225304/Image_uploaded_from_iOS_cbrbep.jpg "Wireframe Photo")
 
-You are **responsible** for scheduling time with your squad to seek approval for each deliverable by the end of the corresponding day, excluding `Saturday` and `Sunday`.
-
-### Rails App Project
-
-|  Day | Deliverable | 
-|---|---| 
-|Day 1: Fri 2/9 | Wireframes, Priority Matrix, Schedule, Time Estimates |
-|Day 2: Mon  2/12 | Lectures: (AM) Rails As An API  (PM) React on Rails |
-|Day 3: Tue 2/13 | Full Day Working on Rails Project  |
-|Day 4: Wed 2/14 | Project Presentations |
-
-### Personal Final Project 
-
-|  Day | Deliverable | 
-|---|---|
-|Day 1: Fri 2/16 | Wireframes, Priority Matrix, Schedule, Time Estimates |
-|Day 2: Tue 2/20 | Pseudocode\Actual code\|
-|Day 3: Wed 2/21 | Work on project  |
-|Day 4: Thur 2/22 | Work on project  |
-|Day 5: Fri 2/23 | Work on project  |
-|Day 6: Mon 2/26 | Working Prototype with full commit to master |
-|Day 7: Tue 2/2 | Final edits...branching first |
-|Day 8: Wed 2/26 | Project Presentations |
-
-## Project Description
-
-Use this section to describe your final project and perhaps any links to relevant sites that help convey the concept and\or functionality.
-
-## Wireframes
-
-Include links to the images of your wireframes. 
-
-## Priority Matrix
-
-Include a link to your full the `Time\Priority` Matix.  
-
-## MVP 
-
-Include a bulleted list of the features that will be part of your MVP 
-
-## POST MVP
-
-Include a bulleted list of the features that will be part of POST MVP
-
+Image includes:
+* Original concepts for how the app should be laid out with wireframes
+* Priority Matrix for app implementation
+* A list of what to include on a Minimum Viable Product
+* A list of what could be added to the project POST
 
 ## Functional Components
+Based on the initial logic defined in the previous game phases section try and breakdown the logic further into functional components, and by that we mean functions.  Does your logic indicate that code could be encapsulated for the purpose of reusablility.  Once a function has been defined it can then be incorporated into a class as a method.
 
-Based on the initial logic defined in the previous game phases section try and breakdown the logic further into functional components, and by that we mean functions.  Does your logic indicate that code could be encapsulated for the purpose of reusablility.  Once a function has been defined it can then be incorporated into a class as a method. 
-
-Time frames are also key in the development cycle.  You have limited time to code all phases of the game.  Your estimates can then be used to evalute game possibilities based on time needed and the actual time you have before game must be submitted. 
-
-| Component | Priority | Estimated Time | Time Invetsted | Actual Time |
-| --- | :---: |  :---: | :---: | :---: |
-| Component 1 | H | 10hrs| 12hrs | 12hrs |
+## Time Frames
+| Component | Priority | Estimated Time | Time Invested | Actual Time |
+| Database Setup | H | 3hrs | 2hrs | 2hrs |
+| Crud Functionality | H | 3hrs | 3hrs | 3hrs |
+| API Implementation | H | 3hrs | 5hrs | 5hrs |
+| Styling | H | 4hrs | 5hrs | 5hrs |
 
 ## Helper Functions
-Helper functions should be generic enought that they can be reused in other applications. Use this section to document all helper functions that fall into this category.
+| Function | Description |
+| axios.get(`http://173.2.2.152:3000/api/artists`) | API Call to receive data from Rails backend database |
 
-| Function | Description | 
-| --- | :---: |  
-| Capitalize | This will capitalize the first letter in a string | 
-
-## Additional Libraries
- Use this section to list all supporting libraries and thier role in the project. 
+## Additional Libraries/Frameworks
+* React Native
+* Rails
+* Flex-Box
+* External API's
+  * Songkick
+  * Google Maps
+* Axios
+* Expo
 
 ## Code Snippet
-
-Use this section to include a brief code snippet of functionality that you are proud of an a brief description.  
+code(onPress={() => this.searchButton(rowData.artistId)})
+* This code demonstrates the action of clicking a button and sending specific artist ID data to be used in the searchButton method.
 
 ## Change Log
- Use this section to document what changes were made and the reasoning behind those changes.  
+* Was initially planning to set up the project all in one file structure. Decided to separate the back and front end files.
 
 ## Issues and Resolutions
- Use this section to list of all major issues encountered and their resolution.
+* Was not able to access the Rails backend data. Realized I needed to create a proxy server.
 
 #### SAMPLE.....
-**ERROR**: app.js:34 Uncaught SyntaxError: Unexpected identifier                                
-**RESOLUTION**: Missing comma after first object in sources {} object
+**ERROR**: Network Error                              
+**RESOLUTION**: Local Host was not working to fetch backend data. I need to change 'localhost' to my current IP address.
