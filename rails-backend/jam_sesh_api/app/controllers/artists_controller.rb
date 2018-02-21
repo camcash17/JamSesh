@@ -41,7 +41,7 @@ class ArtistsController < ApplicationController
   private
 
   def artist_params
-    params.permit(:name, :artistId)
+    params.permit(:name, :artistId, :onTour)
   end
 
   def set_artist

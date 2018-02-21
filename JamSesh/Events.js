@@ -15,16 +15,29 @@ class Events extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.setState({
-          isLoading: false,
-          dataSource: ds.cloneWithRows(responseJson.resultsPage.results.event),
-        }, function() {
-          // do something with new state
-          console.log(responseJson.resultsPage.results.event[0].displayName);
-          console.log('currentId is ' + this.props.currentId);
-          console.log('on tour?', this.props.onTour);
-          // console.log('data source', this.state.dataSource);
-        });
+        if (responseJson.resultsPage.results.event) {
+          this.setState({
+            isLoading: false,
+            dataSource: ds.cloneWithRows(responseJson.resultsPage.results.event),
+          }, function() {
+            // do something with new state
+            // console.log(responseJson.resultsPage.results.event[0].displayName);
+            console.log('currentId is ' + this.props.currentId);
+            console.log('on tour?', this.props.onTour);
+            // console.log('data source', this.state.dataSource);
+          });
+        } else {
+          this.setState({
+            isLoading: false,
+            dataSource: ds.cloneWithRows(responseJson.resultsPage.results),
+          }, function() {
+            // do something with new state
+            // console.log(responseJson.resultsPage.results.event[0].displayName);
+            console.log('currentId is ' + this.props.currentId);
+            console.log('on tour?', this.props.onTour);
+            // console.log('data source', this.state.dataSource);
+          });
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -44,6 +57,36 @@ class Events extends Component {
     .catch(function (error) {
       console.log(error);
     });
+    // this.setState({
+    //   currentId: false,
+    //   currentName: false,
+    //   search: '',
+    //   searchResults: false,
+    //   favs: true
+    // })
+  }
+
+  destroyArtist(id) {
+    Alert.alert(`${name} has been removed!`)
+    axios.delete(`http://173.2.2.152:3000/api/artists`, {
+      id: id
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  map(name, id, lat, long) {
+    Alert.alert(`Find location for ${name}!`)
+    this.setState({
+      venue: name,
+      venueId: id,
+      lat: lat,
+      long: long
+    })
   }
 
   render() {
@@ -62,14 +105,19 @@ class Events extends Component {
           onPress= {this.props.back}
           title="Home"
         />
-        {this.props.favArtist ? <Text></Text> :
+        {this.props.favArtist ?
+        <Button
+          onPress={() => this.destroyArtist(this.props.id)}
+          title="Remove from Favs List"
+        />
+        :
         <Button
           onPress={() => this.addArtist(this.props.currentName, this.props.currentId, this.props.onTour)}
           title="Add to Favs List"
         /> }
-        <Text>Upcoming Events for {this.props.currentName}</Text>
         {this.props.onTour ?
         <View style={{flex: 1, paddingTop: 20}}>
+        <Text>Upcoming Events for {this.props.currentName}</Text>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={(rowData) =>
@@ -77,7 +125,11 @@ class Events extends Component {
                 <Text>{rowData.displayName}</Text>
                 <Text>{rowData.type}</Text>
                 <Text>{rowData.start.date}</Text>
-                <Text>{rowData.venue.displayName}</Text>
+                <Button
+                  onPress={() => this.map(rowData.venue.displayName, rowData.venue.id, rowData.venue.lat, rowData.venue.lng)}
+                  title={rowData.venue.displayName}
+                />
+                {/* <Text>{rowData.results.event.venue.displayName}</Text> */}
                 <Text>{rowData.location.city}</Text>
               </View>
             }

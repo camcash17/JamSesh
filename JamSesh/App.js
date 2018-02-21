@@ -38,12 +38,13 @@ export default class App extends React.Component {
     });
   }
 
-  _onPressButton(id, name, tour) {
+  _onPressButton(artistId, name, tour, id) {
     Alert.alert(`You chose ${name}!`)
     this.setState({
       currentId: id,
       currentName: name,
       onTour: tour,
+      id: id,
       favs: false,
       favArtist: true
     })
@@ -58,6 +59,20 @@ export default class App extends React.Component {
       favs: true,
       favArtist: false
     })
+    axios.get(`http://173.2.2.152:3000/api/artists`)
+    // .then((response) => response.json())
+    .then((response) => {
+      let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+      this.setState({
+        isLoading: false,
+        dataSource: ds.cloneWithRows(response.data),
+      }, function() {
+        console.log(response.data);
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   onChange(event) {
@@ -105,7 +120,7 @@ export default class App extends React.Component {
         <Image source={pic} style={{width: 300, height: 75}}/>
         <Greeting name='Cam' />
         {this.state.searchResults ? <Search search={this.state.search} searchResults={this.state.searchResults} data={this.state.dataSource} back={this.back}/> : <Text></Text> }
-        {this.state.currentId ? <Events currentId={this.state.currentId} currentName={this.state.currentName} onTour={this.state.onTour} favArtist={this.state.favArtist} back={this.back}/> : <Text></Text> }
+        {this.state.currentId ? <Events currentId={this.state.currentId} currentName={this.state.currentName} onTour={this.state.onTour} id={this.state.id} favArtist={this.state.favArtist} back={this.back}/> : <Text></Text> }
         {this.state.favs ?
         <View style={{flex: 1, paddingTop: 20}}>
           <Text>Your Fav Artists</Text>
@@ -114,7 +129,7 @@ export default class App extends React.Component {
             renderRow={(rowData) =>
               <View style={styles.buttonContainer}>
                 <Button
-                  onPress={() => this._onPressButton(rowData.artistId, rowData.name, rowData.onTour)}
+                  onPress={() => this._onPressButton(rowData.artistId, rowData.name, rowData.onTour, rowData.Id)}
                   title={rowData.name}
                 />
               </View>
