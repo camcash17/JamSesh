@@ -22,7 +22,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`http://173.2.2.152:3000/api/artists`)
+    axios.get(`http://192.168.1.100:3000/api/artists`)
     // .then((response) => response.json())
     .then((response) => {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -41,7 +41,7 @@ export default class App extends React.Component {
   _onPressButton(artistId, name, tour, id) {
     Alert.alert(`You chose ${name}!`)
     this.setState({
-      currentId: id,
+      currentId: artistId,
       currentName: name,
       onTour: tour,
       id: id,
@@ -59,7 +59,7 @@ export default class App extends React.Component {
       favs: true,
       favArtist: false
     })
-    axios.get(`http://173.2.2.152:3000/api/artists`)
+    axios.get(`http://192.168.1.100:3000/api/artists`)
     // .then((response) => response.json())
     .then((response) => {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -113,7 +113,7 @@ export default class App extends React.Component {
             onSubmitEditing={this.textInput}
             value={this.state.search}
             returnKeyType='search'
-            autoFocus={true}
+            // autoFocus={true}
             clearButtonMode="while-editing"
           />
         </View>
@@ -129,7 +129,7 @@ export default class App extends React.Component {
             renderRow={(rowData) =>
               <View style={styles.buttonContainer}>
                 <Button
-                  onPress={() => this._onPressButton(rowData.artistId, rowData.name, rowData.onTour, rowData.Id)}
+                  onPress={() => this._onPressButton(rowData.artistId, rowData.name, rowData.onTour, rowData.id)}
                   title={rowData.name}
                 />
               </View>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 70
+    // margin: 70
   },
   buttonContainer: {
     margin: 20

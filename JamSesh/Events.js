@@ -24,6 +24,7 @@ class Events extends Component {
             // console.log(responseJson.resultsPage.results.event[0].displayName);
             console.log('currentId is ' + this.props.currentId);
             console.log('on tour?', this.props.onTour);
+            console.log('id props', this.props.id);
             // console.log('data source', this.state.dataSource);
           });
         } else {
@@ -46,7 +47,7 @@ class Events extends Component {
 
   addArtist(name, id, tour) {
     Alert.alert(`${name} has been added!`)
-    axios.post(`http://173.2.2.152:3000/api/artists`, {
+    axios.post(`http://192.168.1.100:3000/api/artists`, {
       name: name,
       artistId: id,
       onTour: tour
@@ -57,18 +58,18 @@ class Events extends Component {
     .catch(function (error) {
       console.log(error);
     });
-    // this.setState({
-    //   currentId: false,
-    //   currentName: false,
-    //   search: '',
-    //   searchResults: false,
-    //   favs: true
-    // })
+    this.setState({
+      currentId: false,
+      currentName: false,
+      search: '',
+      searchResults: false,
+      favs: true
+    })
   }
 
-  destroyArtist(id) {
+  destroyArtist(id, name) {
     Alert.alert(`${name} has been removed!`)
-    axios.delete(`http://173.2.2.152:3000/api/artists`, {
+    axios.delete(`http://192.168.1.100:3000/api/artists/${id}`, {
       id: id
     })
     .then(function (response) {
@@ -77,6 +78,11 @@ class Events extends Component {
     .catch(function (error) {
       console.log(error);
     });
+    // axios.delete(`http://192.168.1.100:3000/api/artists/${id}`)
+    // .then(res => {
+    //   console.log(res);
+    //   console.log(res.data);
+    // })
   }
 
   map(name, id, lat, long) {
@@ -107,7 +113,7 @@ class Events extends Component {
         />
         {this.props.favArtist ?
         <Button
-          onPress={() => this.destroyArtist(this.props.id)}
+          onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
           title="Remove from Favs List"
         />
         :
@@ -116,12 +122,12 @@ class Events extends Component {
           title="Add to Favs List"
         /> }
         {this.props.onTour ?
-        <View style={{flex: 1, paddingTop: 20}}>
+        <View style={styles.container}>
         <Text>Upcoming Events for {this.props.currentName}</Text>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={(rowData) =>
-              <View style={styles.buttonContainer}>
+              <View style={styles.container}>
                 <Text>{rowData.displayName}</Text>
                 <Text>{rowData.type}</Text>
                 <Text>{rowData.start.date}</Text>
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20
+    margin: 25
   },
   buttonContainer: {
     margin: 20
