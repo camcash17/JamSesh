@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert } from 'react-native';
 import axios from 'axios';
 import Map from './Map';
+import App from './App';
 
 class Events extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Events extends Component {
         if (response.data.resultsPage.results.event) {
           this.setState({
             isLoading: false,
+            crudChange: false,
             dataSource: ds.cloneWithRows(response.data.resultsPage.results.event),
           }, function() {
             // do something with new state
@@ -56,16 +58,14 @@ class Events extends Component {
     .then(function (response) {
       console.log(response);
     })
+    .then(() => {
+      this.setState({
+        crudChange: true,
+      })
+    })
     .catch(function (error) {
       console.log(error);
     });
-    this.setState({
-      currentId: false,
-      currentName: false,
-      search: '',
-      searchResults: false,
-      favs: true
-    })
   }
 
   destroyArtist(id, name) {
@@ -75,7 +75,13 @@ class Events extends Component {
       console.log(res);
       console.log(res.data);
     })
+    .then(() => {
+      this.setState({
+        crudChange: true,
+      })
+    })
   }
+
 
   checkFav() {
     let cleanData = this.props.dataSource.filter(el => {
@@ -115,13 +121,17 @@ class Events extends Component {
 
     if (this.state.isLoading) {
       return (
-        <View style={{flex: 1, paddingTop: 20}}>
+        <View style={{flex: 1, paddingTop: 50}}>
           <ActivityIndicator />
         </View>
       );
     };
 
-    if (this.state.venue) {
+    if (this.state.crudChange) {
+      return (
+        <App />
+      )
+    } else if (this.state.venue) {
       return (
         <Map lat={this.state.lat} long={this.state.long} back={this.props.back}/>
       )

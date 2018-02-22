@@ -29,6 +29,7 @@ export default class App extends React.Component {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
         isLoading: false,
+        crudChange: false,
         dataSource: ds.cloneWithRows(response.data),
         favData: response.data,
       }, function() {
@@ -59,7 +60,8 @@ export default class App extends React.Component {
       search: '',
       searchResults: false,
       favs: true,
-      favArtist: false
+      favArtist: false,
+      crudChange: false
     })
     axios.get(`http://173.2.2.152:3000/api/artists`)
     // .then((response) => response.json())
@@ -95,7 +97,7 @@ export default class App extends React.Component {
 
   if (this.state.isLoading) {
     return (
-      <View style={{flex: 1, paddingTop: 20}}>
+      <View style={{flex: 1, paddingTop: 50}}>
         <ActivityIndicator />
       </View>
     );
