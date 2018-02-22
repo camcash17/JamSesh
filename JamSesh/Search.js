@@ -50,10 +50,12 @@ class Search extends Component {
       );
     };
 
-    return (
-
-      <View style={styles.container}>
-        {this.state.currentId ? <Events currentId={this.state.currentId} currentName={this.state.currentName} dataSource={this.props.dataSource} onTour={this.state.onTour} back={this.props.back}/> :
+    if (this.state.currentId) {
+      return (
+        <Events currentId={this.state.currentId} currentName={this.state.currentName} dataSource={this.props.dataSource} onTour={this.state.onTour} back={this.props.back}/>
+      )
+    } else {
+      return (
         <View style={styles.container}>
           <Button
             onPress={this.props.back}
@@ -74,9 +76,8 @@ class Search extends Component {
             />
           </View>
         </View>
-        }
-      </View>
-    );
+      )
+    }
   }
 }
 

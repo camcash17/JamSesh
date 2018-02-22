@@ -91,17 +91,6 @@ export default class App extends React.Component {
     })
   }
 
-  // mapVenue(name, id, lat, long) {
-  //   Alert.alert(`Find location for ${name}!`)
-  //   this.setState({
-  //     venue: name,
-  //     venueId: id,
-  //     lat: lat,
-  //     long: long
-  //   })
-  //   console.log(name);
-  // }
-
   render() {
 
   if (this.state.isLoading) {

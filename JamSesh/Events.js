@@ -70,25 +70,11 @@ class Events extends Component {
 
   destroyArtist(id, name) {
     Alert.alert(`${name} has been removed!`)
-    // axios.delete(`http://173.2.2.152:3000/api/artists/${id}`, {
-    //   id: id
-    // })
-    // .then(function (response) {
-    //   console.log(response);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
     axios.delete(`http://173.2.2.152:3000/api/artists/${id}`)
     .then(res => {
       console.log(res);
       console.log(res.data);
     })
-    // axios({
-    //   method: 'DELETE',
-    //   url: `http://173.2.2.152:3000/api/artists/${id}`,
-    //   headers: { 'Content-Type': 'application/json' },
-    // });
   }
 
   checkFav() {
