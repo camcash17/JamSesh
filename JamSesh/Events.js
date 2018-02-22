@@ -114,7 +114,7 @@ class Events extends Component {
     }
   }
 
-  map(name, id, lat, long) {
+  mapVenue(name, id, lat, long) {
     Alert.alert(`Find location for ${name}!`)
     this.setState({
       venue: name,
@@ -135,47 +135,49 @@ class Events extends Component {
       );
     };
 
-    return (
-      <View style={styles.container}>
-        {/* {this.state.venue ? <Map lat={this.state.lat} long={this.state.long}/> :
-        <View> */}
-        <Button
-          onPress= {this.props.back}
-          title="Home"
-        />
-        {this.props.favArtist ?
-        <Button
-          onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
-          title="Remove from Favs List"
-        />
-        : this.checkFav()
-         }
-        {this.props.onTour ?
+    if (this.state.venue) {
+      return (
+        <Map lat={this.state.lat} long={this.state.long} back={this.props.back}/>
+      )
+    } else {
+      return (
         <View style={styles.container}>
-        <Text>Upcoming Events for {this.props.currentName}</Text>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={(rowData) =>
-              <View style={styles.container}>
-                <Text>{rowData.displayName}</Text>
-                <Text>{rowData.type}</Text>
-                <Text>{rowData.start.date}</Text>
-                <Button
-                  onPress={() => this.map(rowData.venue.displayName, rowData.venue.id, rowData.venue.lat, rowData.venue.lng)}
-                  title={rowData.venue.displayName}
-                />
-                {this.state.venue ? <Map lat={this.state.lat} long={this.state.long}/> : <Text>No Venue!</Text> }
-                {/* <Text>{rowData.results.event.venue.displayName}</Text> */}
-                <Text>{rowData.location.city}</Text>
-              </View>
-            }
+          <Button
+            onPress= {this.props.back}
+            title="Home"
           />
+          {this.props.favArtist ?
+          <Button
+            onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
+            title="Remove from Favs List"
+          />
+          : this.checkFav()
+           }
+          {this.props.onTour ?
+          <View style={styles.container}>
+            <Text>Upcoming Events for {this.props.currentName}</Text>
+              <View>
+                <ListView
+                  dataSource={this.state.dataSource}
+                  renderRow={(rowData) =>
+                    <View style={styles.buttonContainer}>
+                      <Text>{rowData.displayName}</Text>
+                      <Text>{rowData.type}</Text>
+                      <Text>{rowData.start.date}</Text>
+                      <Button
+                        onPress={() => this.mapVenue(rowData.venue.displayName, rowData.venue.id, rowData.venue.lat, rowData.venue.lng)}
+                        title={rowData.venue.displayName}
+                      />
+                      <Text>{rowData.location.city}</Text>
+                    </View>
+                  }
+                />
+              </View>
+            </View>
+          : <Text>No upcoming Jam Seshes :(</Text> }
         </View>
-        : <Text>No upcoming Jam Seshes :(</Text> }
-        {/* </View>
-      } */}
-      </View>
-    );
+      )
+    }
   }
 }
 
@@ -185,10 +187,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 0
+    margin: 20
   },
   buttonContainer: {
-    margin: 0
+    flex: 1,
+    marginTop: 50,
+    alignItems: 'center',
+    justifyContent: 'center'
+    // padding: 50
   }
 });
 

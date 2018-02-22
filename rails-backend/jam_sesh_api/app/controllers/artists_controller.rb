@@ -30,7 +30,8 @@ class ArtistsController < ApplicationController
   end
 
   def destroy
-    if @artist.delete
+    if @artist = Artist.find(params[:id])
+    @artist.delete
       puts "Deleted"
       render json: Artist.all
     else

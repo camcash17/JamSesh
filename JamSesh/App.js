@@ -91,71 +91,73 @@ export default class App extends React.Component {
     })
   }
 
-  // viewMap() {
+  // mapVenue(name, id, lat, long) {
+  //   Alert.alert(`Find location for ${name}!`)
   //   this.setState({
-  //     venue: this.props.venue
+  //     venue: name,
+  //     venueId: id,
+  //     lat: lat,
+  //     long: long
   //   })
-  //   if (this.state.venue) {
-  //     return (
-  //       <Map lat={this.props.lat} long={this.props.long} />
-  //     )
-  //   } else {
-  //     return (
-  //       <Text></Text>
-  //     )
-  //   }
+  //   console.log(name);
   // }
 
   render() {
 
-    if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, paddingTop: 20}}>
-          <ActivityIndicator />
-        </View>
-      );
-    };
-
-    let pic = {
-      uri: 'http://weclipart.com/gimg/BC65428255B6D625/4e0j4u356q2hq5gcg7sglvwuk.png'
-    };
-
+  if (this.state.isLoading) {
     return (
-      <View style={styles.container}>
-        <View style={{paddingTop: 70}}>
-          <TextInput
-            style={{height: 40}}
-            placeholder="Search Artist"
-            onChangeText={(search) =>  { this.onChange({search})}}
-            onSubmitEditing={this.textInput}
-            value={this.state.search}
-            returnKeyType='search'
-            // autoFocus={true}
-            clearButtonMode="while-editing"
-          />
-        </View>
-        {/* <Image source={pic} style={{width: 300, height: 75}}/> */}
-        <Greeting name='Cam' />
-        {this.state.searchResults ? <Search search={this.state.search} searchResults={this.state.searchResults} dataSource={this.state.favData} back={this.back}/> : <Text></Text> }
-        {this.state.currentId ? <Events currentId={this.state.currentId} currentName={this.state.currentName} onTour={this.state.onTour} id={this.state.id} favArtist={this.state.favArtist} back={this.back}/> : <Text></Text> }
-        {this.state.favs ?
-        <View style={{flex: 1, paddingTop: 20}}>
-          <Text>Your Fav Artists</Text>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={(rowData) =>
-              <View style={styles.buttonContainer}>
-                <Button
-                  onPress={() => this._onPressButton(rowData.artistId, rowData.name, rowData.onTour, rowData.id)}
-                  title={rowData.name}
-                />
-              </View>
-            }
-          />
-        </View>
-        : <Text></Text> }
+      <View style={{flex: 1, paddingTop: 20}}>
+        <ActivityIndicator />
       </View>
     );
+  };
+
+  let pic = {
+    uri: 'http://weclipart.com/gimg/BC65428255B6D625/4e0j4u356q2hq5gcg7sglvwuk.png'
+  };
+
+    if (this.state.favs) {
+      return (
+        <View style={styles.container}>
+          <View style={{paddingTop: 70}}>
+            <TextInput
+              style={{height: 40}}
+              placeholder="Search Artist"
+              onChangeText={(search) =>  { this.onChange({search})}}
+              onSubmitEditing={this.textInput}
+              value={this.state.search}
+              returnKeyType='search'
+              // autoFocus={true}
+              clearButtonMode="while-editing"
+            />
+          </View>
+          <Image source={pic} style={{width: 300, height: 75}}/>
+          <Greeting name='Cam' />
+          <View style={{flex: 1, paddingTop: 20, alignItems: 'center'}}>
+            <Text>Your Fav Artists</Text>
+            <ListView
+              dataSource={this.state.dataSource}
+              renderRow={(rowData) =>
+                <View style={styles.buttonContainer}>
+                  <Button
+                    onPress={() => this._onPressButton(rowData.artistId, rowData.name, rowData.onTour, rowData.id)}
+                    title={rowData.name}
+                  />
+                </View>
+              }
+            />
+          </View>
+        </View>
+      )
+    } else if (this.state.searchResults) {
+      return (
+        <Search search={this.state.search} searchResults={this.state.searchResults} dataSource={this.state.favData} back={this.back}/>
+      )
+    } else if (this.state.currentId) {
+      return (
+        <Events currentId={this.state.currentId} currentName={this.state.currentName} onTour={this.state.onTour} id={this.state.id} favArtist={this.state.favArtist} back={this.back} mapVenue={this.mapVenue}/>
+      )
+    }
   }
 }
 

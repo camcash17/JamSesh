@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Dimensions } from 'react-native';
+import { AppRegistry, StyleSheet, View, Dimensions, Text, Button } from 'react-native';
 import { MapView, Marker } from 'expo';
 // import RetroMapStyles from './MapStyles/RetroMapStyles.json';
 let { width, height } = Dimensions.get('window');
@@ -54,19 +54,26 @@ export default class MapExample extends Component {
   }
   render() {
     return (
-      <MapView
-        // provider={ PROVIDER_GOOGLE }
-        style={ styles.container }
-        // customMapStyle={ RetroMapStyles }
-        showsUserLocation={ true }
-        region={ this.state.region }
-        // onRegionChange={ region => this.setState({region}) }
-        // onRegionChangeComplete={ region => this.setState({region}) }
-      >
-        <MapView.Marker
-          coordinate={ this.state.region }
-        />
-      </MapView>
+      <View>
+        <MapView
+          // provider={ PROVIDER_GOOGLE }
+          style={ styles.container }
+          // customMapStyle={ RetroMapStyles }
+          showsUserLocation={ true }
+          region={ this.state.region }
+          // onRegionChange={ region => this.setState({region}) }
+          // onRegionChangeComplete={ region => this.setState({region}) }
+        >
+          <MapView.Marker
+            coordinate={ this.state.region }
+          />
+          {/* <Text style={{position: 'absolute', top: 10, borderColor: 'black', borderWidth: 0.5, borderRadius: 5, alignItems: 'center', backgroundColor: 'white'}} onPress={this.props.back}> EYYYYYYYYY SUPPPPP</Text> */}
+          <Button style={{top: 100}}
+            onPress= {this.props.back}
+            title="Home"
+          />
+        </MapView>
+      </View>
     );
   }
 }
@@ -74,5 +81,5 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
-  }
+  },
 });
