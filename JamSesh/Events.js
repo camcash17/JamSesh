@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert } from 'react-native';
 import axios from 'axios';
+import Map from './Map';
 
 class Events extends Component {
   constructor(props) {
@@ -11,14 +12,14 @@ class Events extends Component {
   }
 
   componentDidMount() {
-    return fetch(`http://api.songkick.com/api/3.0/artists/${this.props.currentId}/calendar.json?apikey=Z53fjrXd6L2Z6XVV`)
-      .then((response) => response.json())
-      .then((responseJson) => {
+    axios.get(`http://api.songkick.com/api/3.0/artists/${this.props.currentId}/calendar.json?apikey=Z53fjrXd6L2Z6XVV`)
+      // .then((response) => response.json())
+      .then((response) => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        if (responseJson.resultsPage.results.event) {
+        if (response.data.resultsPage.results.event) {
           this.setState({
             isLoading: false,
-            dataSource: ds.cloneWithRows(responseJson.resultsPage.results.event),
+            dataSource: ds.cloneWithRows(response.data.resultsPage.results.event),
           }, function() {
             // do something with new state
             // console.log(responseJson.resultsPage.results.event[0].displayName);
@@ -30,7 +31,7 @@ class Events extends Component {
         } else {
           this.setState({
             isLoading: false,
-            dataSource: ds.cloneWithRows(responseJson.resultsPage.results),
+            dataSource: ds.cloneWithRows(response.data.resultsPage.results),
           }, function() {
             // do something with new state
             // console.log(responseJson.resultsPage.results.event[0].displayName);
@@ -47,7 +48,7 @@ class Events extends Component {
 
   addArtist(name, id, tour) {
     Alert.alert(`${name} has been added!`)
-    axios.post(`http://192.168.1.100:3000/api/artists`, {
+    axios.post(`http://173.2.2.152:3000/api/artists`, {
       name: name,
       artistId: id,
       onTour: tour
@@ -69,20 +70,48 @@ class Events extends Component {
 
   destroyArtist(id, name) {
     Alert.alert(`${name} has been removed!`)
-    axios.delete(`http://192.168.1.100:3000/api/artists/${id}`, {
-      id: id
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-    // axios.delete(`http://192.168.1.100:3000/api/artists/${id}`)
-    // .then(res => {
-    //   console.log(res);
-    //   console.log(res.data);
+    // axios.delete(`http://173.2.2.152:3000/api/artists/${id}`, {
+    //   id: id
     // })
+    // .then(function (response) {
+    //   console.log(response);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+    axios.delete(`http://173.2.2.152:3000/api/artists/${id}`)
+    .then(res => {
+      console.log(res);
+      console.log(res.data);
+    })
+    // axios({
+    //   method: 'DELETE',
+    //   url: `http://173.2.2.152:3000/api/artists/${id}`,
+    //   headers: { 'Content-Type': 'application/json' },
+    // });
+  }
+
+  checkFav() {
+    let cleanData = this.props.dataSource.filter(el => {
+      return (
+        el.name === this.props.currentName
+      )
+    })
+    if (cleanData.length) {
+      return (
+        <Button
+          onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
+          title="Remove from Favs List"
+        />
+      )
+    } else {
+      return (
+        <Button
+          onPress={() => this.addArtist(this.props.currentName, this.props.currentId, this.props.onTour)}
+          title="Add to Favs List"
+        />
+      )
+    }
   }
 
   map(name, id, lat, long) {
@@ -93,6 +122,7 @@ class Events extends Component {
       lat: lat,
       long: long
     })
+    console.log(name);
   }
 
   render() {
@@ -107,6 +137,8 @@ class Events extends Component {
 
     return (
       <View style={styles.container}>
+        {/* {this.state.venue ? <Map lat={this.state.lat} long={this.state.long}/> :
+        <View> */}
         <Button
           onPress= {this.props.back}
           title="Home"
@@ -116,11 +148,8 @@ class Events extends Component {
           onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
           title="Remove from Favs List"
         />
-        :
-        <Button
-          onPress={() => this.addArtist(this.props.currentName, this.props.currentId, this.props.onTour)}
-          title="Add to Favs List"
-        /> }
+        : this.checkFav()
+         }
         {this.props.onTour ?
         <View style={styles.container}>
         <Text>Upcoming Events for {this.props.currentName}</Text>
@@ -135,6 +164,7 @@ class Events extends Component {
                   onPress={() => this.map(rowData.venue.displayName, rowData.venue.id, rowData.venue.lat, rowData.venue.lng)}
                   title={rowData.venue.displayName}
                 />
+                {this.state.venue ? <Map lat={this.state.lat} long={this.state.long}/> : <Text>No Venue!</Text> }
                 {/* <Text>{rowData.results.event.venue.displayName}</Text> */}
                 <Text>{rowData.location.city}</Text>
               </View>
@@ -142,6 +172,8 @@ class Events extends Component {
           />
         </View>
         : <Text>No upcoming Jam Seshes :(</Text> }
+        {/* </View>
+      } */}
       </View>
     );
   }
@@ -153,10 +185,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 25
+    margin: 0
   },
   buttonContainer: {
-    margin: 20
+    margin: 0
   }
 });
 

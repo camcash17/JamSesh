@@ -53,7 +53,7 @@ class Search extends Component {
     return (
 
       <View style={styles.container}>
-        {this.state.currentId ? <Events currentId={this.state.currentId} currentName={this.state.currentName} onTour={this.state.onTour} back={this.props.back}/> :
+        {this.state.currentId ? <Events currentId={this.state.currentId} currentName={this.state.currentName} dataSource={this.props.dataSource} onTour={this.state.onTour} back={this.props.back}/> :
         <View style={styles.container}>
           <Button
             onPress={this.props.back}

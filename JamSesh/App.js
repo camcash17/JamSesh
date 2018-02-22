@@ -4,6 +4,7 @@ import axios from 'axios';
 import Greeting from './Greeting';
 import Events from './Events';
 import Search from './Search';
+import Map from './Map';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,15 +23,16 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`http://192.168.1.100:3000/api/artists`)
+    axios.get(`http://173.2.2.152:3000/api/artists`)
     // .then((response) => response.json())
     .then((response) => {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
         isLoading: false,
         dataSource: ds.cloneWithRows(response.data),
+        favData: response.data,
       }, function() {
-        console.log(response.data);
+        console.log('data:', response.data);
       });
     })
     .catch(function (error) {
@@ -59,7 +61,7 @@ export default class App extends React.Component {
       favs: true,
       favArtist: false
     })
-    axios.get(`http://192.168.1.100:3000/api/artists`)
+    axios.get(`http://173.2.2.152:3000/api/artists`)
     // .then((response) => response.json())
     .then((response) => {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -89,6 +91,21 @@ export default class App extends React.Component {
     })
   }
 
+  // viewMap() {
+  //   this.setState({
+  //     venue: this.props.venue
+  //   })
+  //   if (this.state.venue) {
+  //     return (
+  //       <Map lat={this.props.lat} long={this.props.long} />
+  //     )
+  //   } else {
+  //     return (
+  //       <Text></Text>
+  //     )
+  //   }
+  // }
+
   render() {
 
     if (this.state.isLoading) {
@@ -105,7 +122,7 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={{flex: 1, paddingTop: 0}}>
+        <View style={{paddingTop: 70}}>
           <TextInput
             style={{height: 40}}
             placeholder="Search Artist"
@@ -117,9 +134,9 @@ export default class App extends React.Component {
             clearButtonMode="while-editing"
           />
         </View>
-        <Image source={pic} style={{width: 300, height: 75}}/>
+        {/* <Image source={pic} style={{width: 300, height: 75}}/> */}
         <Greeting name='Cam' />
-        {this.state.searchResults ? <Search search={this.state.search} searchResults={this.state.searchResults} data={this.state.dataSource} back={this.back}/> : <Text></Text> }
+        {this.state.searchResults ? <Search search={this.state.search} searchResults={this.state.searchResults} dataSource={this.state.favData} back={this.back}/> : <Text></Text> }
         {this.state.currentId ? <Events currentId={this.state.currentId} currentName={this.state.currentName} onTour={this.state.onTour} id={this.state.id} favArtist={this.state.favArtist} back={this.back}/> : <Text></Text> }
         {this.state.favs ?
         <View style={{flex: 1, paddingTop: 20}}>
