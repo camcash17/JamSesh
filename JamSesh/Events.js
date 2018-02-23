@@ -50,7 +50,7 @@ class Events extends Component {
   }
 
   addArtist(name, id, tour) {
-    Alert.alert(`${name} has been added!`)
+    // Alert.alert(`${name} has been added!`)
     axios.post(`http://173.2.2.152:3000/api/artists`, {
       name: name,
       artistId: id,
@@ -70,7 +70,7 @@ class Events extends Component {
   }
 
   destroyArtist(id, name) {
-    Alert.alert(`${name} has been removed!`)
+    // Alert.alert(`${name} has been removed!`)
     axios.delete(`http://173.2.2.152:3000/api/artists/${id}`)
     .then(res => {
       console.log(res);
@@ -108,7 +108,7 @@ class Events extends Component {
   }
 
   mapVenue(name, id, lat, long) {
-    Alert.alert(`Find ${name}!`)
+    // Alert.alert(`Find ${name}!`)
     this.setState({
       venue: name,
       venueId: id,

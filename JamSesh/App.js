@@ -42,7 +42,7 @@ export default class App extends React.Component {
   }
 
   _onPressButton(artistId, name, tour, id) {
-    Alert.alert(`You chose ${name}!`)
+    // Alert.alert(`You chose ${name}!`)
     this.setState({
       currentId: artistId,
       currentName: name,

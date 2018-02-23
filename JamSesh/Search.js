@@ -37,7 +37,7 @@ class Search extends Component {
   }
 
   searchButton(id, name, tour) {
-    Alert.alert(`You chose ${name}!`)
+    // Alert.alert(`You chose ${name}!`)
     this.setState({
       currentId: id,
       currentName: name,
