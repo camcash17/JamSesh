@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button, Alert, ScrollView, ActivityIndicator, ListView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image, Button, Alert, ScrollView, ActivityIndicator, ListView, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import Greeting from './Greeting';
 import Events from './Events';
@@ -93,11 +93,15 @@ export default class App extends React.Component {
     })
   }
 
+  _keyboardDidHide() {
+   Keyboard.dismiss()
+ }
+
   render() {
 
   if (this.state.isLoading) {
     return (
-      <View style={{flex: 1, paddingTop: 50}}>
+      <View style={styles.container}>
         <ActivityIndicator />
       </View>
     );
@@ -110,19 +114,21 @@ export default class App extends React.Component {
     if (this.state.favs) {
       return (
         <View style={styles.container}>
-          <View style={{paddingTop: 70}}>
-            <TextInput
-              style={{height: 40}}
-              placeholder="Search Artist"
-              onChangeText={(search) =>  { this.onChange({search})}}
-              onSubmitEditing={this.textInput}
-              value={this.state.search}
-              returnKeyType='search'
-              // autoFocus={true}
-              clearButtonMode="while-editing"
-            />
-          </View>
-          <Image source={pic} style={{width: 300, height: 75}}/>
+          <TouchableOpacity onPress={this._keyboardDidHide}>
+            <View style={{paddingTop: 70}}>
+              <TextInput
+                style={{height: 40}}
+                placeholder="Search Artist"
+                onChangeText={(search) =>  { this.onChange({search})}}
+                onSubmitEditing={this.textInput}
+                value={this.state.search}
+                returnKeyType='search'
+                // autoFocus={true}
+                clearButtonMode="while-editing"
+              />
+            </View>
+          </TouchableOpacity>
+          {/* <Image source={pic} style={{width: 300, height: 75}}/> */}
           <Greeting name='Cam' />
           <View style={{flex: 1, paddingTop: 20, alignItems: 'center'}}>
             <Text>Your Fav Artists</Text>
@@ -155,7 +161,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#d9e6f2',
     alignItems: 'center',
     justifyContent: 'center',
     // margin: 70

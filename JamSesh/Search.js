@@ -12,6 +12,8 @@ class Search extends Component {
   }
 
   componentDidMount() {
+    let that = this;
+    setTimeout(function(){that.setState({timePassed: true})}, 3000);
     axios.get(`http://api.songkick.com/api/3.0/search/artists.json?apikey=Z53fjrXd6L2Z6XVV&query=${this.props.search}`)
     // .then((response) => response.json())
     .then((response) => {
@@ -25,8 +27,12 @@ class Search extends Component {
         console.log(response.data.resultsPage.results.artist[0].onTourUntil);
       });
     })
-    .catch(function (error) {
+    .catch(error => {
       console.log(error);
+      // console.log('this is an error');
+      // this.setState({
+      //   errorHandle: true
+      // })
     });
   }
 
@@ -36,19 +42,26 @@ class Search extends Component {
       currentId: id,
       currentName: name,
       onTour: tour,
-
     })
   }
 
   render() {
-
     if (this.state.isLoading) {
       return (
-        <View style={{flex: 1, paddingTop: 50}}>
+        <View style={styles.errorContainer}>
           <ActivityIndicator />
+          {this.state.timePassed ?
+          <View>
+            <Text>Please search an existing artist...</Text>
+            <Button
+              onPress={this.props.back}
+              title="Home"
+            />
+          </View>
+          : <Text></Text> }
         </View>
-      );
-    };
+      )
+    }
 
     if (this.state.currentId) {
       return (
@@ -88,6 +101,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20
+  },
+  errorContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 0
   },
   buttonContainer: {
     margin: 20

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert } from 'react-native';
 import axios from 'axios';
+import moment from 'moment';
 import Map from './Map';
 import App from './App';
 
@@ -107,7 +108,7 @@ class Events extends Component {
   }
 
   mapVenue(name, id, lat, long) {
-    Alert.alert(`Find location for ${name}!`)
+    Alert.alert(`Find ${name}!`)
     this.setState({
       venue: name,
       venueId: id,
@@ -121,7 +122,7 @@ class Events extends Component {
 
     if (this.state.isLoading) {
       return (
-        <View style={{flex: 1, paddingTop: 50}}>
+        <View style={styles.container}>
           <ActivityIndicator />
         </View>
       );
@@ -159,7 +160,7 @@ class Events extends Component {
                     <View style={styles.buttonContainer}>
                       <Text>{rowData.displayName}</Text>
                       <Text>{rowData.type}</Text>
-                      <Text>{rowData.start.date}</Text>
+                      <Text>{moment(rowData.start.date).format("LL")}</Text>
                       <Button
                         onPress={() => this.mapVenue(rowData.venue.displayName, rowData.venue.id, rowData.venue.lat, rowData.venue.lng)}
                         title={rowData.venue.displayName}
