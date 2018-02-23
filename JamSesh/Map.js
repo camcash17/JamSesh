@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, View, Dimensions, Text, Button } from 'react-native';
-import { MapView, Marker } from 'expo';
+import { MapView, Marker, Callout } from 'expo';
 // import RetroMapStyles from './MapStyles/RetroMapStyles.json';
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -21,6 +21,9 @@ export default class MapExample extends Component {
     };
   }
   componentDidMount() {
+    // setTimeout(function() {
+    //   this.marker.showCallout()
+    // }.bind(this), 1000);
     console.log('In Maps Component');
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -66,12 +69,24 @@ export default class MapExample extends Component {
         >
           <MapView.Marker
             coordinate={ this.state.region }
-          />
+          >
+            <MapView.Callout>
+              <View>
+                <Text>{this.props.name}</Text>
+                <Button style={{top: 100}}
+                  onPress= {this.props.back}
+                  title="Go Back"
+                />
+              </View>
+            </MapView.Callout>
+          </MapView.Marker>
           {/* <Text style={{position: 'absolute', top: 10, borderColor: 'black', borderWidth: 0.5, borderRadius: 5, alignItems: 'center', backgroundColor: 'white'}} onPress={this.props.back}> EYYYYYYYYY SUPPPPP</Text> */}
-          <Button style={{top: 100}}
-            onPress= {this.props.back}
-            title="Home"
-          />
+          {/* <View>
+            <Button style={{top: 100}}
+              onPress= {this.props.back}
+              title="Home"
+            />
+          </View> */}
         </MapView>
       </View>
     );

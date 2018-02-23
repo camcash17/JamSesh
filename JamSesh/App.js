@@ -113,8 +113,8 @@ export default class App extends React.Component {
 
     if (this.state.favs) {
       return (
-        <View style={styles.container}>
-          <TouchableOpacity onPress={this._keyboardDidHide}>
+        <View style={styles.container}  onPress={this._keyboardDidHide}>
+          <TouchableOpacity>
             <View style={{paddingTop: 70}}>
               <TextInput
                 style={{height: 40}}

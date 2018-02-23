@@ -49,8 +49,19 @@ class Events extends Component {
       });
   }
 
+  alertTrigger() {
+    Alert.alert(
+      'Alert Title',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+  }
+
   addArtist(name, id, tour) {
-    // Alert.alert(`${name} has been added!`)
+    Alert.alert(`${name} has been added!`)
     axios.post(`http://173.2.2.152:3000/api/artists`, {
       name: name,
       artistId: id,
@@ -70,7 +81,7 @@ class Events extends Component {
   }
 
   destroyArtist(id, name) {
-    // Alert.alert(`${name} has been removed!`)
+    Alert.alert(`${name} has been removed!`)
     axios.delete(`http://173.2.2.152:3000/api/artists/${id}`)
     .then(res => {
       console.log(res);
@@ -134,7 +145,7 @@ class Events extends Component {
       )
     } else if (this.state.venue) {
       return (
-        <Map lat={this.state.lat} long={this.state.long} back={this.props.back}/>
+        <Map lat={this.state.lat} long={this.state.long} back={this.props.back} name={this.state.venue} />
       )
     } else {
       return (
@@ -145,6 +156,7 @@ class Events extends Component {
           />
           {this.props.favArtist ?
           <Button
+            // onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
             onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
             title="Remove from Favs List"
           />
@@ -158,7 +170,7 @@ class Events extends Component {
                   dataSource={this.state.dataSource}
                   renderRow={(rowData) =>
                     <View style={styles.buttonContainer}>
-                      <Text>{rowData.displayName}</Text>
+                      <Text style = {{textAlign: 'center'}}>{rowData.displayName}</Text>
                       <Text>{rowData.type}</Text>
                       <Text>{moment(rowData.start.date).format("LL")}</Text>
                       <Button
@@ -184,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20
+    margin: 40,
   },
   buttonContainer: {
     flex: 1,
