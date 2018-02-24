@@ -1,172 +1,80 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, Button, Alert, ScrollView, ActivityIndicator, ListView, TextInput, Keyboard, TouchableOpacity } from 'react-native';
-import axios from 'axios';
-import Greeting from './Greeting';
-import Events from './Events';
-import Search from './Search';
-import Map from './Map';
+// import React from 'react';
+// import {
+//   AppRegistry,
+//   // Component,
+//   // StyleSheet,
+//   // Text,
+//   // View,
+//   // Button,
+// } from 'react-native';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      currentId: false,
-      currentName: false,
-      search: '',
-      searchResults: false,
-      favs: true
+import { DrawerNavigator, StackNavigator, TabNavigator } from 'react-navigation';
+
+import Register from './register';
+import Login from './login';
+import Root from './root';
+import Home from './Home';
+
+export default Stack = StackNavigator({
+  Root: {
+    screen: Root,
+    navigationOptions: {
+      headerLeft: null
     }
-    this.back = this.back.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.textInput = this.textInput.bind(this);
-  }
-
-  componentDidMount() {
-    axios.get(`http://173.2.2.152:3000/api/artists`)
-    // .then((response) => response.json())
-    .then((response) => {
-      let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-      this.setState({
-        isLoading: false,
-        crudChange: false,
-        dataSource: ds.cloneWithRows(response.data),
-        favData: response.data,
-      }, function() {
-        console.log('data:', response.data);
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-
-  _onPressButton(artistId, name, tour, id) {
-    // Alert.alert(`You chose ${name}!`)
-    this.setState({
-      currentId: artistId,
-      currentName: name,
-      onTour: tour,
-      id: id,
-      favs: false,
-      favArtist: true
-    })
-  }
-
-  back() {
-    this.setState({
-      currentId: false,
-      currentName: false,
-      search: '',
-      searchResults: false,
-      favs: true,
-      favArtist: false,
-      crudChange: false
-    })
-    axios.get(`http://173.2.2.152:3000/api/artists`)
-    // .then((response) => response.json())
-    .then((response) => {
-      let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-      this.setState({
-        isLoading: false,
-        dataSource: ds.cloneWithRows(response.data),
-      }, function() {
-        console.log(response.data);
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-
-  onChange(event) {
-    this.setState({
-      search: event.search
-    })
-  }
-
-  textInput() {
-    this.setState({
-      currentId: false,
-      searchResults: true,
-      favs: false
-    })
-  }
-
-  _keyboardDidHide() {
-   Keyboard.dismiss()
- }
-
-  render() {
-
-  if (this.state.isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator />
-      </View>
-    );
-  };
-
-  let pic = {
-    uri: 'http://weclipart.com/gimg/BC65428255B6D625/4e0j4u356q2hq5gcg7sglvwuk.png'
-  };
-
-    if (this.state.favs) {
-      return (
-        <View style={styles.container}  onPress={this._keyboardDidHide}>
-          <TouchableOpacity>
-            <View style={{paddingTop: 70}}>
-              <TextInput
-                style={{height: 40}}
-                placeholder="Search Artist"
-                onChangeText={(search) =>  { this.onChange({search})}}
-                onSubmitEditing={this.textInput}
-                value={this.state.search}
-                returnKeyType='search'
-                // autoFocus={true}
-                clearButtonMode="while-editing"
-              />
-            </View>
-          </TouchableOpacity>
-          {/* <Image source={pic} style={{width: 300, height: 75}}/> */}
-          <Greeting name='Cam' />
-          <View style={{flex: 1, paddingTop: 20, alignItems: 'center'}}>
-            <Text>Your Fav Artists</Text>
-            <ListView
-              dataSource={this.state.dataSource}
-              renderRow={(rowData) =>
-                <View style={styles.buttonContainer}>
-                  <Button
-                    onPress={() => this._onPressButton(rowData.artistId, rowData.name, rowData.onTour, rowData.id)}
-                    title={rowData.name}
-                  />
-                </View>
-              }
-            />
-          </View>
-        </View>
-      )
-    } else if (this.state.searchResults) {
-      return (
-        <Search search={this.state.search} searchResults={this.state.searchResults} dataSource={this.state.favData} back={this.back}/>
-      )
-    } else if (this.state.currentId) {
-      return (
-        <Events currentId={this.state.currentId} currentName={this.state.currentName} onTour={this.state.onTour} id={this.state.id} favArtist={this.state.favArtist} back={this.back} mapVenue={this.mapVenue}/>
-      )
-    }
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#d9e6f2',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // margin: 70
   },
-  buttonContainer: {
-    margin: 20
-  }
-});
+  Register: { screen: Register },
+  Login: { screen: Login },
+  Home: {
+    screen: Home,
+    navigationOptions: {
+      headerLeft: null
+    }
+  },
+}, {
+  initialRouteName: 'Root',
+})
+
+// class nativeAuth extends React.Component {
+//
+//   // renderScene(route, navigator) {
+//   //   if(route.name == 'root') {
+//   //     return <Root navigator={navigator} />
+//   //   }
+//   //   if(route.name == 'register') {
+//   //     return <register navigator={navigator} />
+//   //   }
+//   //   if(route.name == 'login') {
+//   //     return <Login navigator={navigator} />
+//   //   }
+//   //   if(route.name == 'home') {
+//   //     return <Home navigator={navigator} {...route.passProps} />
+//   //   }
+//   // }
+//
+//   render() {
+//     const { navigate } = this.props.navigation
+//     return (
+//       <View style={styles.container}>
+//         {/* <Navigator
+//           initialRoute={{name: 'root'}}
+//           renderScene={this.renderScene.bind(this)}
+//         /> */}
+//         <Button
+//           onPress={() => navigate('Register')}
+//           title="Register"
+//         />
+//       </View>
+//     );
+//   }
+// }
+//
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#F5FCFF',
+//     marginTop: 50
+//   },
+// });
+//
+// export default nativeAuth;
+// AppRegistry.registerComponent('Stack', () => Stack);
