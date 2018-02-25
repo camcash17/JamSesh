@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TextInput, TouchableHighlight } from 'react-native';
 import Events from './Events';
 
 class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      search: this.props.navigation.state.params.search,
+      searchResults: this.props.navigation.state.params.searchResults,
+      favData: this.props.navigation.state.params.favData,
+      accessToken: this.props.navigation.state.params.accessToken
     }
   }
 
   componentDidMount() {
     let that = this;
     setTimeout(function(){that.setState({timePassed: true})}, 3000);
-    axios.get(`http://api.songkick.com/api/3.0/search/artists.json?apikey=Z53fjrXd6L2Z6XVV&query=${this.props.search}`)
-    // .then((response) => response.json())
+    axios.get(`http://api.songkick.com/api/3.0/search/artists.json?apikey=Z53fjrXd6L2Z6XVV&query=${this.state.search}`)
     .then((response) => {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
@@ -23,21 +26,17 @@ class Search extends Component {
         dataSource: ds.cloneWithRows(response.data.resultsPage.results.artist),
       }, function() {
         console.log(response.data.resultsPage.results.artist[0].displayName);
-        console.log('search', this.props.search);
+        console.log('search', this.state.search);
         console.log(response.data.resultsPage.results.artist[0].onTourUntil);
+        console.log('fav Data:', this.state.favData);
       });
     })
     .catch(error => {
       console.log(error);
-      // console.log('this is an error');
-      // this.setState({
-      //   errorHandle: true
-      // })
     });
   }
 
   searchButton(id, name, tour) {
-    // Alert.alert(`You chose ${name}!`)
     this.setState({
       currentId: id,
       currentName: name,
@@ -46,6 +45,7 @@ class Search extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation
     if (this.state.isLoading) {
       return (
         <View style={styles.errorContainer}>
@@ -54,7 +54,7 @@ class Search extends Component {
           <View>
             <Text>Please search an existing artist...</Text>
             <Button
-              onPress={this.props.back}
+              onPress={() => navigate('Home', {accessToken: this.state.accessToken})}
               title="Home"
             />
           </View>
@@ -62,45 +62,43 @@ class Search extends Component {
         </View>
       )
     }
-
-    if (this.state.currentId) {
-      return (
-        <Events currentId={this.state.currentId} currentName={this.state.currentName} dataSource={this.props.dataSource} onTour={this.state.onTour} back={this.props.back}/>
-      )
-    } else {
-      return (
-        <View style={styles.container}>
-          <Button
-            onPress={this.props.back}
-            title="Home"
+    return (
+      <View style={styles.container}>
+        <Text style={{fontSize: 30, textDecorationLine: 'underline', color: 'black', opacity: 0.8}}>Artist Search</Text>
+        <View style={{flex: 1, paddingTop: 20}}>
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={(rowData) =>
+              <View style={styles.buttonContainer}>
+                {/* <Button
+                  onPress={() => navigate('Events', {currentId: rowData.id, currentName: rowData.displayName, onTour: rowData.onTourUntil, favData: this.state.favData, accessToken: this.state.accessToken})}
+                  title={rowData.displayName}
+                /> */}
+                <TouchableHighlight
+                  style={styles.artistButton}
+                  onPress={() => navigate('Events', {currentId: rowData.id, currentName: rowData.displayName, onTour: rowData.onTourUntil, favData: this.state.favData, accessToken: this.state.accessToken})}>
+                  <Text style={styles.buttonText}>
+                    {rowData.displayName}
+                  </Text>
+                </TouchableHighlight>
+              </View>
+            }
           />
-          <Text>Artist Search</Text>
-          <View style={{flex: 1, paddingTop: 20}}>
-            <ListView
-              dataSource={this.state.dataSource}
-              renderRow={(rowData) =>
-                <View style={styles.buttonContainer}>
-                  <Button
-                    onPress={() => this.searchButton(rowData.id, rowData.displayName, rowData.onTourUntil)}
-                    title={rowData.displayName}
-                  />
-                </View>
-              }
-            />
-          </View>
         </View>
-      )
-    }
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#17a2b4',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20
+    paddingTop: 40,
+    paddingBottom: 40,
+    padding: 20
   },
   errorContainer: {
     flex: 1,
@@ -110,7 +108,23 @@ const styles = StyleSheet.create({
     margin: 0
   },
   buttonContainer: {
-    margin: 20
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 15
+  },
+  artistButton: {
+    backgroundColor: '#24434f',
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    borderRadius: 80,
+    padding: 20
+  },
+  buttonText: {
+    fontSize: 22,
+    color: '#FFF',
+    alignSelf: 'center',
+    textAlign: 'center'
   }
 });
 

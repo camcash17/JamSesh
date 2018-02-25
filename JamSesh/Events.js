@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TouchableHighlight } from 'react-native';
 import axios from 'axios';
 import moment from 'moment';
 import Map from './Map';
@@ -10,12 +10,18 @@ class Events extends Component {
     super(props);
     this.state = {
       isLoading: true,
+      currentId: this.props.navigation.state.params.currentId,
+      currentName: this.props.navigation.state.params.currentName,
+      onTour: this.props.navigation.state.params.onTour,
+      favData: this.props.navigation.state.params.favData,
+      id: this.props.navigation.state.params.id,
+      favArtist: this.props.navigation.state.params.favArtist,
+      accessToken: this.props.navigation.state.params.accessToken
     }
   }
 
   componentDidMount() {
-    axios.get(`http://api.songkick.com/api/3.0/artists/${this.props.currentId}/calendar.json?apikey=Z53fjrXd6L2Z6XVV`)
-      // .then((response) => response.json())
+    axios.get(`http://api.songkick.com/api/3.0/artists/${this.state.currentId}/calendar.json?apikey=Z53fjrXd6L2Z6XVV`)
       .then((response) => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         if (response.data.resultsPage.results.event) {
@@ -24,23 +30,18 @@ class Events extends Component {
             crudChange: false,
             dataSource: ds.cloneWithRows(response.data.resultsPage.results.event),
           }, function() {
-            // do something with new state
-            // console.log(responseJson.resultsPage.results.event[0].displayName);
-            console.log('currentId is ' + this.props.currentId);
-            console.log('on tour?', this.props.onTour);
-            console.log('id props', this.props.id);
-            // console.log('data source', this.state.dataSource);
+            console.log('currentId is ' + this.state.currentId);
+            console.log('on tour?', this.state.onTour);
+            console.log('id props', this.state.id);
+            console.log('fav Data', this.state.favData);
           });
         } else {
           this.setState({
             isLoading: false,
             dataSource: ds.cloneWithRows(response.data.resultsPage.results),
           }, function() {
-            // do something with new state
-            // console.log(responseJson.resultsPage.results.event[0].displayName);
-            console.log('currentId is ' + this.props.currentId);
-            console.log('on tour?', this.props.onTour);
-            // console.log('data source', this.state.dataSource);
+            console.log('currentId is ' + this.state.currentId);
+            console.log('on tour?', this.state.onTour);
           });
         }
       })
@@ -61,8 +62,8 @@ class Events extends Component {
   }
 
   addArtist(name, id, tour) {
-    Alert.alert(`${name} has been added!`)
-    axios.post(`http://173.2.2.152:3000/api/artists`, {
+    // Alert.alert(`${name} has been added!`)
+    axios.post(`http://localhost:3000/api/artists`, {
       name: name,
       artistId: id,
       onTour: tour
@@ -71,9 +72,8 @@ class Events extends Component {
       console.log(response);
     })
     .then(() => {
-      this.setState({
-        crudChange: true,
-      })
+      const { navigate } = this.props.navigation
+      navigate('Home', {accessToken: this.state.accessToken})
     })
     .catch(function (error) {
       console.log(error);
@@ -81,52 +81,42 @@ class Events extends Component {
   }
 
   destroyArtist(id, name) {
-    Alert.alert(`${name} has been removed!`)
-    axios.delete(`http://173.2.2.152:3000/api/artists/${id}`)
+    // Alert.alert(`${name} has been removed!`)
+    axios.delete(`http://localhost:3000/api/artists/${id}`)
     .then(res => {
       console.log(res);
       console.log(res.data);
     })
     .then(() => {
-      this.setState({
-        crudChange: true,
-      })
+      const { navigate } = this.props.navigation
+      navigate('Home', {accessToken: this.state.accessToken})
     })
   }
 
 
   checkFav() {
-    let cleanData = this.props.dataSource.filter(el => {
+    let cleanData = this.state.favData.filter(el => {
       return (
-        el.name === this.props.currentName
+        el.name === this.state.currentName
       )
     })
     if (cleanData.length) {
       return (
         <Button
-          onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
-          title="Remove from Favs List"
+          onPress={() => this.destroyArtist(this.state.id, this.state.currentName)}
+          title="Remove from Favorites"
+          color="red"
         />
       )
     } else {
       return (
         <Button
-          onPress={() => this.addArtist(this.props.currentName, this.props.currentId, this.props.onTour)}
-          title="Add to Favs List"
+          onPress={() => this.addArtist(this.state.currentName, this.state.currentId, this.state.onTour)}
+          title="Add to Favorites"
+          color="green"
         />
       )
     }
-  }
-
-  mapVenue(name, id, lat, long) {
-    // Alert.alert(`Find ${name}!`)
-    this.setState({
-      venue: name,
-      venueId: id,
-      lat: lat,
-      long: long
-    })
-    console.log(name);
   }
 
   render() {
@@ -139,71 +129,63 @@ class Events extends Component {
       );
     };
 
-    if (this.state.crudChange) {
-      return (
-        <App />
-      )
-    } else if (this.state.venue) {
-      return (
-        <Map lat={this.state.lat} long={this.state.long} back={this.props.back} name={this.state.venue} />
-      )
-    } else {
-      return (
+    const { navigate } = this.props.navigation
+    return (
+      <View style={styles.container}>
+        {this.props.favArtist ?
+        <Button
+          onPress={() => this.destroyArtist(this.state.id, this.state.currentName)}
+          title="Remove from Favorites"
+          color="red"
+        />
+        : this.checkFav()
+         }
+        {this.state.onTour ?
         <View style={styles.container}>
-          <Button
-            onPress= {this.props.back}
-            title="Home"
-          />
-          {this.props.favArtist ?
-          <Button
-            // onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
-            onPress={() => this.destroyArtist(this.props.id, this.props.currentName)}
-            title="Remove from Favs List"
-          />
-          : this.checkFav()
-           }
-          {this.props.onTour ?
-          <View style={styles.container}>
-            <Text>Upcoming Events for {this.props.currentName}</Text>
-              <View>
-                <ListView
-                  dataSource={this.state.dataSource}
-                  renderRow={(rowData) =>
-                    <View style={styles.buttonContainer}>
-                      <Text style = {{textAlign: 'center'}}>{rowData.displayName}</Text>
-                      <Text>{rowData.type}</Text>
-                      <Text>{moment(rowData.start.date).format("LL")}</Text>
-                      <Button
-                        onPress={() => this.mapVenue(rowData.venue.displayName, rowData.venue.id, rowData.venue.lat, rowData.venue.lng)}
-                        title={rowData.venue.displayName}
-                      />
-                      <Text>{rowData.location.city}</Text>
-                    </View>
-                  }
-                />
-              </View>
+          <Text style={{fontSize: 30, textDecorationLine: 'underline', paddingBottom: 20, opacity: 0.8}}>Upcoming Events for {this.props.currentName}</Text>
+            <View>
+              <ListView
+                dataSource={this.state.dataSource}
+                renderRow={(rowData) =>
+                  <View style={styles.buttonContainer}>
+                    <Text style = {{fontSize: 20, textAlign: 'center'}}>{rowData.displayName}</Text>
+                    <Text style = {{fontSize: 15}}>{rowData.type}</Text>
+                    <Text style = {{fontSize: 14}}>{moment(rowData.start.date).format("LL")}</Text>
+                    <Button
+                      onPress={() => navigate('Maps', {lat: rowData.venue.lat, long: rowData.venue.lng, name: rowData.venue.displayName})}
+                      title={rowData.venue.displayName}
+                      color="darkblue"
+                    />
+                    <Text style = {{fontSize: 15}}>{rowData.location.city}</Text>
+                  </View>
+                }
+              />
             </View>
-          : <Text>No upcoming Jam Seshes :(</Text> }
-        </View>
-      )
-    }
+          </View>
+        : <Text>No upcoming Jam Seshes :(</Text> }
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#17a2b4',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 40,
+    paddingTop: 40,
+    paddingBottom: 40,
+    padding: 20
   },
   buttonContainer: {
     flex: 1,
-    marginTop: 50,
+    // marginTop: 20,
     alignItems: 'center',
-    justifyContent: 'center'
-    // padding: 50
+    justifyContent: 'center',
+    padding: 15,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
   }
 });
 
