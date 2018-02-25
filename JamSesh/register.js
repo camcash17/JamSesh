@@ -81,6 +81,7 @@ class Register extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={{fontSize: 20, padding: 20}}>Register for JamSesh</Text>
         <TextInput
           onChangeText={(val) => this.setState({email: val})}
           style={styles.input} placeholder="Email"

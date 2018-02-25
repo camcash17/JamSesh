@@ -62,7 +62,7 @@ class Events extends Component {
   }
 
   addArtist(name, id, tour) {
-    // Alert.alert(`${name} has been added!`)
+    Alert.alert(`${name} has been added!`)
     axios.post(`http://localhost:3000/api/artists`, {
       name: name,
       artistId: id,
@@ -81,7 +81,7 @@ class Events extends Component {
   }
 
   destroyArtist(id, name) {
-    // Alert.alert(`${name} has been removed!`)
+    Alert.alert(`${name} has been removed!`)
     axios.delete(`http://localhost:3000/api/artists/${id}`)
     .then(res => {
       console.log(res);
@@ -162,7 +162,7 @@ class Events extends Component {
               />
             </View>
           </View>
-        : <Text>No upcoming Jam Seshes :(</Text> }
+        : <Text style = {{fontSize: 20}}>No upcoming Jam Seshes :(</Text> }
       </View>
     )
   }

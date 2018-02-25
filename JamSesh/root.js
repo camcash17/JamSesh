@@ -53,6 +53,7 @@ class Root extends React.Component {
     const { navigate } = this.props.navigation
     return (
       <View style={styles.container}>
+        <Text style={{fontSize: 50, padding: 30}}>JamSesh</Text>
         <Text>Welcome</Text>
         <TouchableHighlight style={styles.button} onPress={() => navigate('Register')}>
           <Text style={styles.buttonText}>

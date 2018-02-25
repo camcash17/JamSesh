@@ -52,11 +52,11 @@ class Search extends Component {
           <ActivityIndicator />
           {this.state.timePassed ?
           <View>
-            <Text>Please search an existing artist...</Text>
-            <Button
+            <Text>Please go back & search an existing artist...</Text>
+            {/* <Button
               onPress={() => navigate('Home', {accessToken: this.state.accessToken})}
               title="Home"
-            />
+            /> */}
           </View>
           : <Text></Text> }
         </View>

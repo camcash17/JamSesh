@@ -89,6 +89,7 @@ class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={{fontSize: 20, padding: 20}}>Login to JamSesh</Text>
         <TextInput
           onChangeText={(text) => this.setState({email: text})}
           style={styles.input} placeholder="Email"

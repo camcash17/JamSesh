@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, View, Dimensions, Text, Button } from 'react-native';
 import { MapView, Marker, Callout } from 'expo';
+// import RetroMapStyles from './MapStyles/RetroMapStyles.json';
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE = 0;
@@ -20,6 +21,9 @@ export default class MapExample extends Component {
     };
   }
   componentDidMount() {
+    // setTimeout(function() {
+    //   this.marker.showCallout()
+    // }.bind(this), 1000);
     console.log('In Maps Component');
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -40,7 +44,7 @@ export default class MapExample extends Component {
         this.setState({
           region: {
             latitude: this.props.navigation.state.params.lat,
-            longitude: this.props.navigation.state.params.lat,
+            longitude: this.props.navigation.state.params.long,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }
@@ -55,7 +59,9 @@ export default class MapExample extends Component {
     return (
       <View>
         <MapView
+          // provider={ PROVIDER_GOOGLE }
           style={ styles.container }
+          // customMapStyle={ RetroMapStyles }
           showsUserLocation={ true }
           region={ this.state.region }
           // onRegionChange={ region => this.setState({region}) }
@@ -67,9 +73,20 @@ export default class MapExample extends Component {
             <MapView.Callout>
               <View>
                 <Text>{this.props.navigation.state.params.name}</Text>
+                {/* <Button style={{top: 100}}
+                  onPress= {this.props.back}
+                  title="Go Back"
+                /> */}
               </View>
             </MapView.Callout>
           </MapView.Marker>
+          {/* <Text style={{position: 'absolute', top: 10, borderColor: 'black', borderWidth: 0.5, borderRadius: 5, alignItems: 'center', backgroundColor: 'white'}} onPress={this.props.back}> EYYYYYYYYY SUPPPPP</Text> */}
+          {/* <View>
+            <Button style={{top: 100}}
+              onPress= {this.props.back}
+              title="Home"
+            />
+          </View> */}
         </MapView>
       </View>
     );
