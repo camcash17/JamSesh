@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TouchableHighlight, TouchableOpacity, Linking, Image } from 'react-native';
 import axios from 'axios';
 import moment from 'moment';
 import Map from './Map';
@@ -13,11 +13,42 @@ class Events extends Component {
       currentId: this.props.navigation.state.params.currentId,
       currentName: this.props.navigation.state.params.currentName,
       onTour: this.props.navigation.state.params.onTour,
+      uri: this.props.navigation.state.params.uri,
       favData: this.props.navigation.state.params.favData,
       id: this.props.navigation.state.params.id,
       favArtist: this.props.navigation.state.params.favArtist,
       accessToken: this.props.navigation.state.params.accessToken
     }
+  }
+
+  static navigationOptions = {
+    title: 'Events',
+    headerStyle: {
+      backgroundColor: '#353360',
+      height: 85,
+    },
+    headerTitleStyle: {
+      color: 'white',
+      fontSize: 25
+    },
+    headerRight: (
+      <TouchableOpacity
+        style={{
+          height: 45,
+          width: 45,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 15,
+          shadowColor: 'black',
+          shadowOpacity: 0.5,
+          shadowOffset: {
+            width: 2,
+            height: 2,
+          }
+        }}
+        >
+          <Image style={{width: 40, height: 40}} source={require('./sk-badge-white.png')} onPress={() => Linking.openURL('https://www.songkick.com/')} />
+        </TouchableOpacity>)
   }
 
   componentDidMount() {
@@ -27,13 +58,13 @@ class Events extends Component {
         if (response.data.resultsPage.results.event) {
           this.setState({
             isLoading: false,
-            crudChange: false,
             dataSource: ds.cloneWithRows(response.data.resultsPage.results.event),
           }, function() {
             console.log('currentId is ' + this.state.currentId);
             console.log('on tour?', this.state.onTour);
             console.log('id props', this.state.id);
             console.log('fav Data', this.state.favData);
+            console.log('URI', this.state.uri);
           });
         } else {
           this.setState({
@@ -142,27 +173,28 @@ class Events extends Component {
          }
         {this.state.onTour ?
         <View style={styles.container}>
-          <Text style={{fontSize: 30, textDecorationLine: 'underline', paddingBottom: 20, opacity: 0.8}}>Upcoming Events for {this.props.currentName}</Text>
+          <Text style={{fontSize: 30, marginTop: 30, marginBottom: -20, textAlign: 'center', color: '#b89cbf', paddingBottom: 20, opacity: 0.8, }}>Upcoming Events for</Text>
+          <Text style={{fontSize: 30, textAlign: 'center', color: '#b89cbf', paddingBottom: 20, opacity: 0.8, }} onPress={() => Linking.openURL(`${this.state.uri}`)}>{this.state.currentName}</Text>
             <View>
               <ListView
                 dataSource={this.state.dataSource}
                 renderRow={(rowData) =>
                   <View style={styles.buttonContainer}>
-                    <Text style = {{fontSize: 20, textAlign: 'center'}}>{rowData.displayName}</Text>
-                    <Text style = {{fontSize: 15}}>{rowData.type}</Text>
-                    <Text style = {{fontSize: 14}}>{moment(rowData.start.date).format("LL")}</Text>
+                    <Text style = {{fontSize: 20, textAlign: 'center', color: 'white'}} onPress={() => Linking.openURL(`${rowData.uri}`)}>{rowData.displayName}</Text>
+                    <Text style = {{fontSize: 15, color: 'white'}}>{rowData.type}</Text>
                     <Button
                       onPress={() => navigate('Maps', {lat: rowData.venue.lat, long: rowData.venue.lng, name: rowData.venue.displayName})}
                       title={rowData.venue.displayName}
-                      color="darkblue"
+                      color="#ab5bbf"
                     />
-                    <Text style = {{fontSize: 15}}>{rowData.location.city}</Text>
+                    <Text style = {{fontSize: 15, color: 'white'}}>{rowData.location.city}</Text>
+                    <Text style = {{fontSize: 14, color: 'white'}}>{moment(rowData.start.date).format("LL")}</Text>
                   </View>
                 }
               />
             </View>
           </View>
-        : <Text style = {{fontSize: 20}}>No upcoming Jam Seshes :(</Text> }
+        : <Text style = {{fontSize: 20, color: '#b89cbf'}}>No upcoming Jam Seshes :(</Text> }
       </View>
     )
   }
@@ -171,7 +203,7 @@ class Events extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#17a2b4',
+    backgroundColor: '#22355e',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 40,
@@ -184,8 +216,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
+    borderTopColor: 'black',
+    borderTopWidth: 1
   }
 });
 

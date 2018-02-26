@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Dimensions, Text, Button } from 'react-native';
+import { AppRegistry, StyleSheet, View, Dimensions, Text, Button, TouchableOpacity, Image } from 'react-native';
 import { MapView, Marker, Callout } from 'expo';
 // import RetroMapStyles from './MapStyles/RetroMapStyles.json';
 let { width, height } = Dimensions.get('window');
@@ -13,13 +13,44 @@ export default class MapExample extends Component {
     super();
     this.state = {
       region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
+        latitude: 39.739236,
+        longitude: -104.990251,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       }
     };
   }
+
+  static navigationOptions = {
+    title: 'Map',
+    headerStyle: {
+      backgroundColor: '#353360',
+      height: 85,
+    },
+    headerTitleStyle: {
+      color: 'white',
+      fontSize: 25
+    },
+    headerRight: (
+      <TouchableOpacity
+        style={{
+          height: 45,
+          width: 45,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 15,
+          shadowColor: 'black',
+          shadowOpacity: 0.5,
+          shadowOffset: {
+            width: 2,
+            height: 2,
+          }
+        }}
+        >
+          <Image style={{width: 40, height: 40}} source={require('./sk-badge-white.png')} onPress={() => Linking.openURL('https://www.songkick.com/')} />
+        </TouchableOpacity>)
+  }
+
   componentDidMount() {
     // setTimeout(function() {
     //   this.marker.showCallout()

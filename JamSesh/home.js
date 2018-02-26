@@ -22,6 +22,16 @@ export default class App extends React.Component {
     }
   }
 
+  static navigationOptions = {
+    title: 'What to do today?',
+    headerStyle: {
+      backgroundColor: '#16a085',
+    },
+    headerTitleStyle: {
+      color: 'white'
+    },
+  }
+
   componentDidMount() {
     axios.get(`http://localhost:3000/api/artists`)
     // .then((response) => response.json())
@@ -88,32 +98,30 @@ export default class App extends React.Component {
           </Text>
         </TouchableHighlight>
         <TouchableOpacity>
-          <View style={{paddingTop: 50, paddingBottom: 50, margin: 0}}>
+          <View style={{padding: 10, width: 300,  marginTop: 40, marginBottom: 40, backgroundColor: '#353360', borderRadius: .5}}>
             <TextInput
-              style={{height: 40, width: 300, fontSize: 40, color: 'white', margin: 0}}
-              placeholder="     Search Artist"
+              style={{height: 40, alignSelf: 'stretch', fontSize: 40, color: 'white', margin: 0, opacity: .8}}
+              placeholder="Search Artist..."
+              placeholderTextColor="#5a4769"
               onChangeText={(search) =>  { this.onChange({search})}}
               onSubmitEditing={() => navigate('Search', {search: this.state.search, searchResults: this.state.searchResults, favData: this.state.favData, accessToken: this.state.accessToken})}
               value={this.state.search}
-              returnKeyType='search'
+              returnKeyType="search"
               clearButtonMode="while-editing"
+              spellCheck={false}
+
               // autoFocus={true}
             />
           </View>
         </TouchableOpacity>
         {/* <Image source={pic} style={{width: 300, height: 75}}/> */}
         {/* <Greeting name={this.state.name} /> */}
-        <View style={{flex: 1, paddingTop: 20, alignItems: 'center'}}>
-          <Text style={{fontSize: 30, textDecorationLine: 'underline', color: 'black', paddingBottom: 20, opacity: 0.8}}>Favorite Artists</Text>
-          <ListView
+        <View style={{flex: 1, paddingTop: 10, paddingBottom: 20, alignItems: 'center'}}>
+          <Text style={{fontSize: 30, color: '#b89cbf', paddingBottom: 20}}>Favorite Artists</Text>
+          <ListView style={{borderTopColor: 'black', borderTopWidth: 1}}
             dataSource={this.state.dataSource}
             renderRow={(rowData) =>
               <View style={styles.buttonContainer}>
-                {/* <Button style={{fontSize: 50}}
-                  onPress={() => navigate('Events', {currentId: rowData.artistId, currentName: rowData.name, favData: this.state.favData, onTour: rowData.onTour, id: rowData.id, favArtist: this.state.favArtist, back: this.back, mapVenue: this.mapVenue, accessToken: this.state.accessToken})}
-                  title={rowData.name}
-                  color="white"
-                /> */}
                 <TouchableHighlight
                   style={styles.artistButton}
                   onPress={() => navigate('Events', {currentId: rowData.artistId, currentName: rowData.name, favData: this.state.favData, onTour: rowData.onTour, id: rowData.id, favArtist: this.state.favArtist, accessToken: this.state.accessToken})}>
@@ -133,7 +141,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#17a2b4',
+    // backgroundColor: '#17a2b4',
+    backgroundColor: '#22355e',
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 40,
@@ -147,13 +156,14 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 50,
-    backgroundColor: '#a75c5c',
+    backgroundColor: '#473863',
     alignSelf: 'stretch',
     justifyContent: 'center',
     opacity: 0.9
   },
   artistButton: {
-    backgroundColor: '#24434f',
+    // backgroundColor: '#473863',
+    backgroundColor: '#473863',
     alignSelf: 'stretch',
     justifyContent: 'center',
     borderRadius: 80,
@@ -161,7 +171,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 22,
-    color: '#FFF',
+    color: 'white',
+    // color: '#FFF',
     alignSelf: 'center',
     textAlign: 'center'
   }

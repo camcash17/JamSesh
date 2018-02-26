@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TextInput, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TextInput, TouchableHighlight, TouchableOpacity, Image } from 'react-native';
 import Events from './Events';
 
 class Search extends Component {
@@ -13,6 +13,36 @@ class Search extends Component {
       favData: this.props.navigation.state.params.favData,
       accessToken: this.props.navigation.state.params.accessToken
     }
+  }
+
+  static navigationOptions = {
+    title: 'Search',
+    headerStyle: {
+      backgroundColor: '#353360',
+      height: 85,
+    },
+    headerTitleStyle: {
+      color: 'white',
+      fontSize: 25
+    },
+    headerRight: (
+      <TouchableOpacity
+        style={{
+          height: 45,
+          width: 45,
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginRight: 15,
+          shadowColor: 'black',
+          shadowOpacity: 0.5,
+          shadowOffset: {
+            width: 2,
+            height: 2,
+          }
+        }}
+        >
+          <Image style={{width: 40, height: 40}} source={require('./sk-badge-white.png')} onPress={() => Linking.openURL('https://www.songkick.com/')} />
+        </TouchableOpacity>)
   }
 
   componentDidMount() {
@@ -52,11 +82,7 @@ class Search extends Component {
           <ActivityIndicator />
           {this.state.timePassed ?
           <View>
-            <Text>Please go back & search an existing artist...</Text>
-            {/* <Button
-              onPress={() => navigate('Home', {accessToken: this.state.accessToken})}
-              title="Home"
-            /> */}
+            <Text style={{color: 'white', fontSize: 15}}>Please go back & search an existing artist...</Text>
           </View>
           : <Text></Text> }
         </View>
@@ -64,19 +90,15 @@ class Search extends Component {
     }
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 30, textDecorationLine: 'underline', color: 'black', opacity: 0.8}}>Artist Search</Text>
+        <Text style={{fontSize: 30, textDecorationLine: 'underline', color: '#b89cbf', opacity: 0.8}}>Artist Search</Text>
         <View style={{flex: 1, paddingTop: 20}}>
           <ListView
             dataSource={this.state.dataSource}
             renderRow={(rowData) =>
               <View style={styles.buttonContainer}>
-                {/* <Button
-                  onPress={() => navigate('Events', {currentId: rowData.id, currentName: rowData.displayName, onTour: rowData.onTourUntil, favData: this.state.favData, accessToken: this.state.accessToken})}
-                  title={rowData.displayName}
-                /> */}
                 <TouchableHighlight
                   style={styles.artistButton}
-                  onPress={() => navigate('Events', {currentId: rowData.id, currentName: rowData.displayName, onTour: rowData.onTourUntil, favData: this.state.favData, accessToken: this.state.accessToken})}>
+                  onPress={() => navigate('Events', {currentId: rowData.id, currentName: rowData.displayName, onTour: rowData.onTourUntil, uri: rowData.uri, favData: this.state.favData, accessToken: this.state.accessToken})}>
                   <Text style={styles.buttonText}>
                     {rowData.displayName}
                   </Text>
@@ -93,7 +115,7 @@ class Search extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#17a2b4',
+    backgroundColor: '#22355e',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 40,
@@ -102,7 +124,7 @@ const styles = StyleSheet.create({
   },
   errorContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#22355e',
     alignItems: 'center',
     justifyContent: 'center',
     margin: 0
@@ -114,7 +136,7 @@ const styles = StyleSheet.create({
     padding: 15
   },
   artistButton: {
-    backgroundColor: '#24434f',
+    backgroundColor: '#473863',
     alignSelf: 'stretch',
     justifyContent: 'center',
     borderRadius: 80,

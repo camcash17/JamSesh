@@ -1,4 +1,6 @@
 import { DrawerNavigator, StackNavigator, TabNavigator } from 'react-navigation';
+import React from 'react';
+import { TouchableOpacity, Text, Image, Linking } from 'react-native';
 
 import Register from './register';
 import Login from './login';
@@ -20,7 +22,34 @@ export default Stack = StackNavigator({
   Home: {
     screen: Home,
     navigationOptions: {
-      headerLeft: null
+      headerLeft: null,
+      title: 'JamSesh',
+      headerStyle: {
+        backgroundColor: '#353360',
+        height: 85,
+      },
+      headerRight: (
+        <TouchableOpacity
+          style={{
+            height: 45,
+            width: 45,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 15,
+            shadowColor: 'black',
+            shadowOpacity: 0.5,
+            shadowOffset: {
+              width: 2,
+              height: 2,
+            }
+          }}
+          >
+            <Image style={{width: 40, height: 40}} source={require('./sk-badge-white.png')} onPress={() => Linking.openURL('https://www.songkick.com/')} />
+          </TouchableOpacity>),
+      headerTitleStyle: {
+        color: 'white',
+        fontSize: 25
+      },
     }
   },
   Search: { screen: Search },
