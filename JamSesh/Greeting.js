@@ -5,7 +5,7 @@ class Greeting extends Component {
 
   render() {
     return (
-      <Text>Hello {this.props.name}!</Text>
+      <Text style={{paddingTop: 20, paddingBottom: 0, fontSize: 20, alignItems: 'center', color: 'white'}}>Hello {this.props.name}!</Text>
     );
   }
 }

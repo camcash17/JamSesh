@@ -54,8 +54,6 @@ class Register extends React.Component {
       if(response.status >= 200 && response.status < 300) {
         console.log("res success is:", res);
         let accessToken = res;
-        // console.log('access token:', accessToken);
-        // this.redirect('home', accessToken);
         const { navigate } = this.props.navigation
         navigate('Home', {accessToken: accessToken})
       } else {

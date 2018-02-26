@@ -2,7 +2,6 @@
   "name": "JamSesh",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3000/",
   "devDependencies": {
     "react-native-scripts": "1.11.1",
     "jest-expo": "25.0.0",

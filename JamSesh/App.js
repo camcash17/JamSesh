@@ -5,7 +5,7 @@ import { TouchableOpacity, Text, Image, Linking } from 'react-native';
 import Register from './register';
 import Login from './login';
 import Root from './root';
-import Home from './Home';
+import Home from './home';
 import Events from './Events';
 import Maps from './Map';
 import Search from './Search';
@@ -30,6 +30,7 @@ export default Stack = StackNavigator({
       },
       headerRight: (
         <TouchableOpacity
+          onPress={() => Linking.openURL('https://www.songkick.com/')}
           style={{
             height: 45,
             width: 45,
@@ -44,7 +45,7 @@ export default Stack = StackNavigator({
             }
           }}
           >
-            <Image style={{width: 40, height: 40}} source={require('./sk-badge-white.png')} onPress={() => Linking.openURL('https://www.songkick.com/')} />
+            <Image style={{width: 40, height: 40}} source={require('./sk-badge-white.png')} />
           </TouchableOpacity>),
       headerTitleStyle: {
         color: 'white',

@@ -11,7 +11,8 @@ class Search extends Component {
       search: this.props.navigation.state.params.search,
       searchResults: this.props.navigation.state.params.searchResults,
       favData: this.props.navigation.state.params.favData,
-      accessToken: this.props.navigation.state.params.accessToken
+      accessToken: this.props.navigation.state.params.accessToken,
+      userId: this.props.navigation.state.params.userId
     }
   }
 
@@ -59,6 +60,7 @@ class Search extends Component {
         console.log('search', this.state.search);
         console.log(response.data.resultsPage.results.artist[0].onTourUntil);
         console.log('fav Data:', this.state.favData);
+        console.log('userId', this.state.userId);
       });
     })
     .catch(error => {
@@ -96,13 +98,13 @@ class Search extends Component {
             dataSource={this.state.dataSource}
             renderRow={(rowData) =>
               <View style={styles.buttonContainer}>
-                <TouchableHighlight
+                <TouchableOpacity
                   style={styles.artistButton}
-                  onPress={() => navigate('Events', {currentId: rowData.id, currentName: rowData.displayName, onTour: rowData.onTourUntil, uri: rowData.uri, favData: this.state.favData, accessToken: this.state.accessToken})}>
+                  onPress={() => navigate('Events', {currentId: rowData.id, currentName: rowData.displayName, onTour: rowData.onTourUntil, uri: rowData.uri, userId: this.state.userId, favData: this.state.favData, accessToken: this.state.accessToken})}>
                   <Text style={styles.buttonText}>
                     {rowData.displayName}
                   </Text>
-                </TouchableHighlight>
+                </TouchableOpacity>
               </View>
             }
           />

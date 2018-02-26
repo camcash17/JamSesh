@@ -36,7 +36,7 @@ class Login extends React.Component {
       await AsyncStorage.setItem(ACCESS_TOKEN, accessToken);
       this.getToken();
     } catch(error) {
-      console.log("something went wrong");
+      console.log("something went wrong storing token", error);
     }
   }
 
@@ -45,7 +45,7 @@ class Login extends React.Component {
       await AsyncStorage.removeItem(ACCESS_TOKEN);
       this.getToken();
     } catch(error) {
-      console.log("something went wrong");
+      console.log("something went wrong removing token", error);
     }
   }
 
@@ -72,7 +72,6 @@ class Login extends React.Component {
         let accessToken = res;
         this.storeToken(accessToken);
         console.log("res token:", accessToken);
-        // this.redirect('home', accessToken);
         const { navigate } = this.props.navigation
         navigate('Home', {accessToken: accessToken})
       } else {

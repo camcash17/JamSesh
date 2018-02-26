@@ -17,7 +17,8 @@ class Events extends Component {
       favData: this.props.navigation.state.params.favData,
       id: this.props.navigation.state.params.id,
       favArtist: this.props.navigation.state.params.favArtist,
-      accessToken: this.props.navigation.state.params.accessToken
+      accessToken: this.props.navigation.state.params.accessToken,
+      userId: this.props.navigation.state.params.userId
     }
   }
 
@@ -65,6 +66,7 @@ class Events extends Component {
             console.log('id props', this.state.id);
             console.log('fav Data', this.state.favData);
             console.log('URI', this.state.uri);
+            console.log('userId', this.state.userId);
           });
         } else {
           this.setState({
@@ -92,12 +94,14 @@ class Events extends Component {
     )
   }
 
-  addArtist(name, id, tour) {
+  addArtist(name, id, tour, uri, userId) {
     Alert.alert(`${name} has been added!`)
     axios.post(`http://localhost:3000/api/artists`, {
       name: name,
       artistId: id,
-      onTour: tour
+      onTour: tour,
+      uri: uri,
+      userId: userId
     })
     .then(function (response) {
       console.log(response);
@@ -142,7 +146,7 @@ class Events extends Component {
     } else {
       return (
         <Button
-          onPress={() => this.addArtist(this.state.currentName, this.state.currentId, this.state.onTour)}
+          onPress={() => this.addArtist(this.state.currentName, this.state.currentId, this.state.onTour, this.state.uri, this.state.userId)}
           title="Add to Favorites"
           color="green"
         />
@@ -181,14 +185,14 @@ class Events extends Component {
                 renderRow={(rowData) =>
                   <View style={styles.buttonContainer}>
                     <Text style = {{fontSize: 20, textAlign: 'center', color: 'white'}} onPress={() => Linking.openURL(`${rowData.uri}`)}>{rowData.displayName}</Text>
-                    <Text style = {{fontSize: 15, color: 'white'}}>{rowData.type}</Text>
+                    <Text style = {{fontSize: 15, color: 'white', textAlign: 'center'}}>{rowData.type}</Text>
                     <Button
-                      onPress={() => navigate('Maps', {lat: rowData.venue.lat, long: rowData.venue.lng, name: rowData.venue.displayName})}
+                      onPress={() => navigate('Maps', {lat: rowData.venue.lat, long: rowData.venue.lng, name: rowData.venue.displayName, uri: rowData.venue.uri })}
                       title={rowData.venue.displayName}
                       color="#ab5bbf"
                     />
-                    <Text style = {{fontSize: 15, color: 'white'}}>{rowData.location.city}</Text>
-                    <Text style = {{fontSize: 14, color: 'white'}}>{moment(rowData.start.date).format("LL")}</Text>
+                    <Text style = {{fontSize: 15, color: 'white', textAlign: 'center'}} onPress={() => Linking.openURL(`${rowData.venue.metroArea.uri}`)}>{rowData.location.city}</Text>
+                    <Text style = {{fontSize: 14, color: 'white', textAlign: 'center'}}>{moment(rowData.start.date).format("LL")}</Text>
                   </View>
                 }
               />
@@ -212,7 +216,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    // marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
