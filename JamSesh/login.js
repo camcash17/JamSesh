@@ -51,7 +51,8 @@ class Login extends React.Component {
 
   async onLoginPressed() {
     try {
-      let response = await fetch(`http://localhost:3000/api/login`, {
+      // let response = await fetch(`http://173.2.2.152:3000/api/login`, {
+      let response = await fetch(`http://173.2.2.152:3000/api/login`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

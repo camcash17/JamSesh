@@ -33,7 +33,8 @@ class Register extends React.Component {
 
   async onRegisterPressed() {
     try {
-      let response = await fetch(`http://localhost:3000/api/users`, {
+      let response = await fetch(`http://173.2.2.152:3000/api/users`, {
+      // let response = await fetch(`http://localhost:3000/api/users`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

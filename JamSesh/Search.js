@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TextInput, TouchableHighlight, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TextInput, TouchableHighlight, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Events from './Events';
 
 class Search extends Component {
@@ -92,9 +92,10 @@ class Search extends Component {
     }
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 30, textDecorationLine: 'underline', color: '#b89cbf', opacity: 0.8}}>Artist Search</Text>
+        <ScrollView>
+        <Text style={{fontSize: 30, color: '#b89cbf', opacity: 0.8, textAlign: 'center'}}>Artist Search</Text>
         <View style={{flex: 1, paddingTop: 20}}>
-          <ListView
+          <ListView style={{borderTopColor: 'black', borderTopWidth: 1}}
             dataSource={this.state.dataSource}
             renderRow={(rowData) =>
               <View style={styles.buttonContainer}>
@@ -109,6 +110,7 @@ class Search extends Component {
             }
           />
         </View>
+        </ScrollView>
       </View>
     )
   }

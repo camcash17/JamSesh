@@ -24,7 +24,8 @@ export default class App extends React.Component {
 
   componentDidMount() {
     let matchUser = [];
-    axios.get(`http://localhost:3000/api/users`)
+    axios.get(`http://173.2.2.152:3000/api/users`)
+    // axios.get(`http://localhost:3000/api/users`)
     .then((response) => {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
@@ -44,7 +45,8 @@ export default class App extends React.Component {
     .catch(function (error) {
       console.log(error);
     });
-    axios.get(`http://localhost:3000/api/artists`)
+    axios.get(`http://173.2.2.152:3000/api/artists`)
+    // axios.get(`http://localhost:3000/api/artists`)
     .then((response) => {
       if (response.data.length) {
         const array = response.data.filter(artist => artist.userId == this.state.userId);
@@ -100,14 +102,16 @@ export default class App extends React.Component {
 
     const { navigate } = this.props.navigation
     return (
-      // <ScrollView>
-        <View style={styles.container} onPress={this._keyboardDidHide}>
-          <TouchableHighlight style={styles.button} onPress={this.onLogout.bind(this)}>
-            <Text style={styles.buttonText}>
-              Logout
-            </Text>
-          </TouchableHighlight>
-          <Greeting name={this.state.userName} />
+      <View style={styles.container} onPress={this._keyboardDidHide}>
+        <TouchableHighlight style={styles.button} onPress={this.onLogout.bind(this)}>
+          <Text style={styles.buttonText}>
+            Logout
+          </Text>
+        </TouchableHighlight>
+        <ScrollView>
+          <View style={{alignItems: 'center', paddingTop: 10}}>
+            <Greeting name={this.state.userName} />
+          </View>
           <TouchableOpacity>
             <View style={{padding: 10, width: 300,  marginTop: 40, marginBottom: 40, backgroundColor: '#353360', borderRadius: .5}}>
               <TextInput
@@ -124,7 +128,7 @@ export default class App extends React.Component {
             </View>
           </TouchableOpacity>
           <View style={{flex: 1, paddingTop: 10, paddingBottom: 20, alignItems: 'center'}}>
-            <Text style={{fontSize: 30, color: '#b89cbf', paddingBottom: 20}}>Favorite Artists</Text>
+            <Text style={{fontSize: 30, color: '#b89cbf', paddingBottom: 20, opacity: .8}}>Favorite Artists</Text>
             <ListView style={{borderTopColor: 'black', borderTopWidth: 1}}
               dataSource={this.state.dataSource}
               renderRow={(rowData) =>
@@ -140,8 +144,8 @@ export default class App extends React.Component {
               }
             />
           </View>
-        </View>
-      // </ScrollView>
+        </ScrollView>
+      </View>
     )
   }
 }
@@ -169,7 +173,7 @@ const styles = StyleSheet.create({
   },
   artistButton: {
     backgroundColor: '#473863',
-    alignSelf: 'stretch',
+    // alignSelf: 'stretch',
     justifyContent: 'center',
     borderRadius: 80,
     padding: 20

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TouchableHighlight, TouchableOpacity, Linking, Image } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, ListView, Button, Alert, TouchableHighlight, TouchableOpacity, Linking, Image, ScrollView } from 'react-native';
 import axios from 'axios';
 import moment from 'moment';
 import Map from './Map';
@@ -96,7 +96,8 @@ class Events extends Component {
 
   addArtist(name, id, tour, uri, userId) {
     Alert.alert(`${name} has been added!`)
-    axios.post(`http://localhost:3000/api/artists`, {
+    axios.post(`http://173.2.2.152:3000/api/artists`, {
+    // axios.post(`http://localhost:3000/api/artists`, {
       name: name,
       artistId: id,
       onTour: tour,
@@ -117,7 +118,8 @@ class Events extends Component {
 
   destroyArtist(id, name) {
     Alert.alert(`${name} has been removed!`)
-    axios.delete(`http://localhost:3000/api/artists/${id}`)
+    axios.delete(`http://173.2.2.152:3000/api/artists/${id}`)
+    // axios.delete(`http://localhost:3000/api/artists/${id}`)
     .then(res => {
       console.log(res);
       console.log(res.data);
@@ -167,6 +169,7 @@ class Events extends Component {
     const { navigate } = this.props.navigation
     return (
       <View style={styles.container}>
+        <ScrollView>
         {this.props.favArtist ?
         <Button
           onPress={() => this.destroyArtist(this.state.id, this.state.currentName)}
@@ -177,7 +180,7 @@ class Events extends Component {
          }
         {this.state.onTour ?
         <View style={styles.container}>
-          <Text style={{fontSize: 30, marginTop: 30, marginBottom: -20, textAlign: 'center', color: '#b89cbf', paddingBottom: 20, opacity: 0.8, }}>Upcoming Events for</Text>
+          <Text style={{fontSize: 25, marginTop: 30, marginBottom: -20, textAlign: 'center', color: '#b89cbf', paddingBottom: 20, opacity: 0.8, }}>Upcoming Events for</Text>
           <Text style={{fontSize: 30, textAlign: 'center', color: '#b89cbf', paddingBottom: 20, opacity: 0.8, }} onPress={() => Linking.openURL(`${this.state.uri}`)}>{this.state.currentName}</Text>
             <View>
               <ListView
@@ -185,20 +188,21 @@ class Events extends Component {
                 renderRow={(rowData) =>
                   <View style={styles.buttonContainer}>
                     <Text style = {{fontSize: 20, textAlign: 'center', color: 'white'}} onPress={() => Linking.openURL(`${rowData.uri}`)}>{rowData.displayName}</Text>
-                    <Text style = {{fontSize: 15, color: 'white', textAlign: 'center'}}>{rowData.type}</Text>
+                    <Text style = {{fontSize: 15, color: 'white', textAlign: 'center', paddingTop: 10}}>{rowData.type}</Text>
                     <Button
                       onPress={() => navigate('Maps', {lat: rowData.venue.lat, long: rowData.venue.lng, name: rowData.venue.displayName, uri: rowData.venue.uri })}
                       title={rowData.venue.displayName}
                       color="#ab5bbf"
                     />
-                    <Text style = {{fontSize: 15, color: 'white', textAlign: 'center'}} onPress={() => Linking.openURL(`${rowData.venue.metroArea.uri}`)}>{rowData.location.city}</Text>
-                    <Text style = {{fontSize: 14, color: 'white', textAlign: 'center'}}>{moment(rowData.start.date).format("LL")}</Text>
+                    <Text style = {{fontSize: 15, color: '#b89cbf', textAlign: 'center', paddingBottom: 10}} onPress={() => Linking.openURL(`${rowData.venue.metroArea.uri}`)}>{rowData.location.city}</Text>
+                    <Text style = {{fontSize: 14, color: '#825d8c', textAlign: 'center'}}>{moment(rowData.start.date).format("LL")}</Text>
                   </View>
                 }
               />
             </View>
           </View>
         : <Text style = {{fontSize: 20, color: '#b89cbf'}}>No upcoming Jam Seshes :(</Text> }
+        </ScrollView>
       </View>
     )
   }
