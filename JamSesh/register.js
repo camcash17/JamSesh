@@ -7,6 +7,7 @@ import {
   Navigator,
   Text,
   View,
+  ScrollView
 } from 'react-native';
 
 class Register extends React.Component {
@@ -79,35 +80,36 @@ class Register extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={{fontSize: 20, padding: 20}}>Register for JamSesh</Text>
-        <TextInput
-          onChangeText={(val) => this.setState({email: val})}
-          style={styles.input} placeholder="Email"
-        />
-        <TextInput
-          onChangeText={(val) => this.setState({name: val})}
-          style={styles.input} placeholder="Name"
-        />
-        <TextInput
-          onChangeText={(val) => this.setState({password: val})}
-          style={styles.input} placeholder="Password"
-          secureTextEntry={true}
-        />
-        <TextInput
-          onChangeText={(val) => this.setState({password_confirmation: val})}
-          style={styles.input} placeholder="Confirm Password"
-          secureTextEntry={true}
-        />
+      <View style={StyleSheet.absoluteFill} style={styles.container} >
+        <ScrollView>
+          <Text style={{fontSize: 20, padding: 20, textAlign: 'center'}}>Register for JamSesh</Text>
+          <TextInput
+            onChangeText={(val) => this.setState({email: val})}
+            style={styles.input} placeholder="Email"
+          />
+          <TextInput
+            onChangeText={(val) => this.setState({name: val})}
+            style={styles.input} placeholder="Name"
+          />
+          <TextInput
+            onChangeText={(val) => this.setState({password: val})}
+            style={styles.input} placeholder="Password"
+            secureTextEntry={true}
+          />
+          <TextInput
+            onChangeText={(val) => this.setState({password_confirmation: val})}
+            style={styles.input} placeholder="Confirm Password"
+            secureTextEntry={true}
+          />
 
-        <TouchableHighlight style={styles.button} onPress={this.onRegisterPressed.bind(this)}>
-          <Text style={styles.buttonText}>
-            Register
-          </Text>
-        </TouchableHighlight>
+          <TouchableHighlight style={styles.button} onPress={this.onRegisterPressed.bind(this)}>
+            <Text style={styles.buttonText}>
+              Register
+            </Text>
+          </TouchableHighlight>
 
-        <Errors errors={this.state.errors} />
-
+          <Errors errors={this.state.errors} />
+        </ScrollView>
       </View>
     );
   }

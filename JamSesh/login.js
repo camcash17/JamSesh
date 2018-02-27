@@ -7,6 +7,7 @@ import {
   AsyncStorage,
   Text,
   View,
+  ScrollView
 } from 'react-native';
 
 const ACCESS_TOKEN = 'access_token';
@@ -88,27 +89,29 @@ class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={{fontSize: 20, padding: 20}}>Login to JamSesh</Text>
-        <TextInput
-          onChangeText={(text) => this.setState({email: text})}
-          style={styles.input} placeholder="Email"
-        />
-        <TextInput
-          onChangeText={(text) => this.setState({password: text})}
-          style={styles.input} placeholder="Password"
-          secureTextEntry={true}
-        />
+      <View style={StyleSheet.absoluteFill} style={styles.container}>
+        <ScrollView>
+          <Text style={{fontSize: 20, padding: 20, textAlign: 'center'}}>Login to JamSesh</Text>
+          <TextInput
+            onChangeText={(text) => this.setState({email: text})}
+            style={styles.input} placeholder="Email"
+          />
+          <TextInput
+            onChangeText={(text) => this.setState({password: text})}
+            style={styles.input} placeholder="Password"
+            secureTextEntry={true}
+          />
 
-        <TouchableHighlight style={styles.button} onPress={this.onLoginPressed.bind(this)}>
-          <Text style={styles.buttonText}>
-            Login
+          <TouchableHighlight style={styles.button} onPress={this.onLoginPressed.bind(this)}>
+            <Text style={styles.buttonText}>
+              Login
+            </Text>
+          </TouchableHighlight>
+
+          <Text style={styles.error}>
+            {this.state.error}
           </Text>
-        </TouchableHighlight>
-
-        <Text style={styles.error}>
-          {this.state.error}
-        </Text>
+        </ScrollView>
       </View>
     );
   }

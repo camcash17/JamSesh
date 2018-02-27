@@ -6,6 +6,7 @@ import {
   AsyncStorage,
   Text,
   View,
+  ScrollView
 } from 'react-native';
 
 const ACCESS_TOKEN = 'access_token';
@@ -53,9 +54,10 @@ class Root extends React.Component {
   render() {
     const { navigate } = this.props.navigation
     return (
-      <View style={styles.container}>
+      <View style={StyleSheet.absoluteFill} style={styles.container}>
+      <ScrollView>
         <Text style={{fontSize: 50, padding: 30}}>JamSesh</Text>
-        <Text>Welcome</Text>
+        <Text style={{fontSize: 20, padding: 10, textAlign: 'center'}}>Welcome</Text>
         <TouchableHighlight style={styles.button} onPress={() => navigate('Register')}>
           <Text style={styles.buttonText}>
             Register
@@ -66,7 +68,8 @@ class Root extends React.Component {
             Login
           </Text>
         </TouchableHighlight>
-      </View>
+      </ScrollView>
+    </View>
     )
   }
 }

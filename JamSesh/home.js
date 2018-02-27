@@ -57,6 +57,16 @@ export default class App extends React.Component {
             dataSource: ds.cloneWithRows(array),
             favData: array,
           }, function() {
+            console.log('data', this.state.favData);
+          });
+        } else {
+          let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+          this.setState({
+            isLoading: false,
+            dataSource: ds.cloneWithRows(array),
+            favData: array,
+          }, function() {
+            console.log('data', this.state.favData);
           });
         }
       }
@@ -130,6 +140,7 @@ export default class App extends React.Component {
           <View style={{flex: 1, paddingTop: 10, paddingBottom: 20, alignItems: 'center'}}>
             <Text style={{fontSize: 30, color: '#b89cbf', paddingBottom: 20, opacity: .8}}>Favorite Artists</Text>
             <ListView style={{borderTopColor: 'black', borderTopWidth: 1}}
+              enableEmptySections={true}
               dataSource={this.state.dataSource}
               renderRow={(rowData) =>
                 <View style={styles.buttonContainer}>
