@@ -22,6 +22,7 @@ export default Stack = StackNavigator({
   Home: {
     screen: Home,
     navigationOptions: {
+      gesturesEnabled: false,
       headerLeft: null,
       title: 'JamSesh',
       headerStyle: {

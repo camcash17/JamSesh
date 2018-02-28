@@ -9,6 +9,7 @@ import {
   View,
   ScrollView
 } from 'react-native';
+import InputScrollView from 'react-native-input-scroll-view';
 
 const ACCESS_TOKEN = 'access_token';
 
@@ -52,8 +53,8 @@ class Login extends React.Component {
 
   async onLoginPressed() {
     try {
-      // let response = await fetch(`http://173.2.2.152:3000/api/login`, {
-      let response = await fetch(`http://173.2.2.152:3000/api/login`, {
+      // let response = await fetch(`http://192.168.0.12:3000/api/login`, {
+      let response = await fetch(`http://173.2.3.195:3000/api/login`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -90,7 +91,7 @@ class Login extends React.Component {
   render() {
     return (
       <View style={StyleSheet.absoluteFill} style={styles.container}>
-        <ScrollView>
+        <InputScrollView>
           <Text style={{fontSize: 20, padding: 20, textAlign: 'center'}}>Login to JamSesh</Text>
           <TextInput
             onChangeText={(text) => this.setState({email: text})}
@@ -111,7 +112,7 @@ class Login extends React.Component {
           <Text style={styles.error}>
             {this.state.error}
           </Text>
-        </ScrollView>
+        </InputScrollView>
       </View>
     );
   }
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
     padding: 10,
-    paddingTop: 80
+    paddingTop: 20
   },
   input: {
     height: 50,

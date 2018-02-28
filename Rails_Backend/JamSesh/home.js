@@ -24,8 +24,8 @@ export default class App extends React.Component {
 
   componentDidMount() {
     let matchUser = [];
-    axios.get(`http://173.2.2.152:3000/api/users`)
-    // axios.get(`http://localhost:3000/api/users`)
+    axios.get(`http://173.2.3.195:3000/api/users`)
+    // axios.get(`http://192.168.0.12:3000/api/users`)
     .then((response) => {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
@@ -45,8 +45,8 @@ export default class App extends React.Component {
     .catch(function (error) {
       console.log(error);
     });
-    axios.get(`http://173.2.2.152:3000/api/artists`)
-    // axios.get(`http://localhost:3000/api/artists`)
+    axios.get(`http://173.2.3.195:3000/api/artists`)
+    // axios.get(`http://192.168.0.12:3000/api/artists`)
     .then((response) => {
       if (response.data.length) {
         const array = response.data.filter(artist => artist.userId == this.state.userId);

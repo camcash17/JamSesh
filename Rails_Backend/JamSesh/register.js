@@ -9,6 +9,7 @@ import {
   View,
   ScrollView
 } from 'react-native';
+import InputScrollView from 'react-native-input-scroll-view';
 
 class Register extends React.Component {
   constructor() {
@@ -34,8 +35,8 @@ class Register extends React.Component {
 
   async onRegisterPressed() {
     try {
-      let response = await fetch(`http://173.2.2.152:3000/api/users`, {
-      // let response = await fetch(`http://localhost:3000/api/users`, {
+      let response = await fetch(`http://173.2.3.195:3000/api/users`, {
+      // let response = await fetch(`http://192.168.0.12:3000/api/users`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -81,7 +82,7 @@ class Register extends React.Component {
   render() {
     return (
       <View style={StyleSheet.absoluteFill} style={styles.container} >
-        <ScrollView>
+        <InputScrollView>
           <Text style={{fontSize: 20, padding: 20, textAlign: 'center'}}>Register for JamSesh</Text>
           <TextInput
             onChangeText={(val) => this.setState({email: val})}
@@ -109,7 +110,7 @@ class Register extends React.Component {
           </TouchableHighlight>
 
           <Errors errors={this.state.errors} />
-        </ScrollView>
+        </InputScrollView>
       </View>
     );
   }
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
     padding: 10,
-    paddingTop: 80
+    paddingTop: 20
   },
   input: {
     height: 50,

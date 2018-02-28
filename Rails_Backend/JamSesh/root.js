@@ -34,8 +34,8 @@ class Root extends React.Component {
     let accessToken = token
     // session[access_token] = accessToken
     try {
-      let response = await fetch('http://173.2.2.152:3000/api/verify?session%5Baccess_token%5D='+accessToken);
-      // let response = await fetch('http://localhost:3000/api/verify?session%5Baccess_token%5D='+accessToken);
+      // let response = await fetch('http://173.2.3.195:3000/api/verify?session%5Baccess_token%5D='+accessToken);
+      let response = await fetch('http://localhost:3000/api/verify?session%5Baccess_token%5D='+accessToken);
       let res = await response.text();
       if(response.status >= 200 && response.status < 300) {
         const { navigate } = this.props.navigation

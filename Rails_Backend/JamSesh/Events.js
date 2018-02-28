@@ -96,8 +96,8 @@ class Events extends Component {
 
   addArtist(name, id, tour, uri, userId) {
     Alert.alert(`${name} has been added!`)
-    axios.post(`http://173.2.2.152:3000/api/artists`, {
-    // axios.post(`http://localhost:3000/api/artists`, {
+    axios.post(`http://173.2.3.195:3000/api/artists`, {
+    // axios.post(`http://192.168.0.12:3000/api/artists`, {
       name: name,
       artistId: id,
       onTour: tour,
@@ -118,8 +118,8 @@ class Events extends Component {
 
   destroyArtist(id, name) {
     Alert.alert(`${name} has been removed!`)
-    axios.delete(`http://173.2.2.152:3000/api/artists/${id}`)
-    // axios.delete(`http://localhost:3000/api/artists/${id}`)
+    axios.delete(`http://173.2.3.195:3000/api/artists/${id}`)
+    // axios.delete(`http://192.168.0.12:3000/api/artists/${id}`)
     .then(res => {
       console.log(res);
       console.log(res.data);
@@ -187,7 +187,7 @@ class Events extends Component {
                 dataSource={this.state.dataSource}
                 renderRow={(rowData) =>
                   <View style={styles.buttonContainer}>
-                    <Text style = {{fontSize: 20, textAlign: 'center', color: 'white'}} onPress={() => Linking.openURL(`${rowData.uri}`)}>{rowData.displayName}</Text>
+                    <Text style = {{fontSize: 20, textAlign: 'center', color: 'white'}}>{rowData.displayName}</Text>
                     <Text style = {{fontSize: 15, color: 'white', textAlign: 'center', paddingTop: 10}}>{rowData.type}</Text>
                     <Button
                       onPress={() => navigate('Maps', {lat: rowData.venue.lat, long: rowData.venue.lng, name: rowData.venue.displayName, uri: rowData.venue.uri })}
@@ -195,7 +195,8 @@ class Events extends Component {
                       color="#ab5bbf"
                     />
                     <Text style = {{fontSize: 15, color: '#b89cbf', textAlign: 'center', paddingBottom: 10}} onPress={() => Linking.openURL(`${rowData.venue.metroArea.uri}`)}>{rowData.location.city}</Text>
-                    <Text style = {{fontSize: 14, color: '#825d8c', textAlign: 'center'}}>{moment(rowData.start.date).format("LL")}</Text>
+                    <Text style = {{fontSize: 14, color: '#825d8c', textAlign: 'center', paddingBottom: 10}}>{moment(rowData.start.date).format("LL")}</Text>
+                    <Text style = {{fontSize: 15, textAlign: 'center', color: '#2e72e8', fontWeight: 'bold'}} onPress={() => Linking.openURL(`${rowData.uri}`)}>Find Tickets</Text>
                   </View>
                 }
               />
