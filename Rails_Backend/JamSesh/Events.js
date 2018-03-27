@@ -96,8 +96,8 @@ class Events extends Component {
 
   addArtist(name, id, tour, uri, userId) {
     Alert.alert(`${name} has been added!`)
-    axios.post(`http://173.2.3.195:3000/api/artists`, {
-    // axios.post(`http://192.168.0.12:3000/api/artists`, {
+    // axios.post(`http://173.2.3.195:3000/api/artists`, {
+    axios.post(`http://173.4.0.16:19000/api/artists`, {
       name: name,
       artistId: id,
       onTour: tour,
@@ -118,8 +118,8 @@ class Events extends Component {
 
   destroyArtist(id, name) {
     Alert.alert(`${name} has been removed!`)
-    axios.delete(`http://173.2.3.195:3000/api/artists/${id}`)
-    // axios.delete(`http://192.168.0.12:3000/api/artists/${id}`)
+    // axios.delete(`http://173.2.3.195:3000/api/artists/${id}`)
+    axios.delete(`http://173.4.0.16:19000/api/artists/${id}`)
     .then(res => {
       console.log(res);
       console.log(res.data);

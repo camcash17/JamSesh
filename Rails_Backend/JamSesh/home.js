@@ -5,6 +5,7 @@ import Greeting from './Greeting';
 import Events from './Events';
 import Search from './Search';
 import Map from './Map';
+import InputScrollView from 'react-native-input-scroll-view';
 
 const ACCESS_TOKEN = 'access_token';
 
@@ -24,8 +25,8 @@ export default class App extends React.Component {
 
   componentDidMount() {
     let matchUser = [];
-    axios.get(`http://173.2.3.195:3000/api/users`)
-    // axios.get(`http://192.168.0.12:3000/api/users`)
+    // axios.get(`http://173.2.3.195:3000/api/users`)
+    axios.get(`http://173.4.0.16:19000/api/users`)
     .then((response) => {
       let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
@@ -45,8 +46,8 @@ export default class App extends React.Component {
     .catch(function (error) {
       console.log(error);
     });
-    axios.get(`http://173.2.3.195:3000/api/artists`)
-    // axios.get(`http://192.168.0.12:3000/api/artists`)
+    // axios.get(`http://173.2.3.195:3000/api/artists`)
+    axios.get(`http://173.4.0.16:19000/api/artists`)
     .then((response) => {
       if (response.data.length) {
         const array = response.data.filter(artist => artist.userId == this.state.userId);
@@ -118,7 +119,7 @@ export default class App extends React.Component {
             Logout
           </Text>
         </TouchableHighlight>
-        <ScrollView>
+        <InputScrollView>
           <View style={{alignItems: 'center', paddingTop: 10}}>
             <Greeting name={this.state.userName} />
           </View>
@@ -155,7 +156,7 @@ export default class App extends React.Component {
               }
             />
           </View>
-        </ScrollView>
+        </InputScrollView>
       </View>
     )
   }
@@ -180,7 +181,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#473863',
     alignSelf: 'stretch',
     justifyContent: 'center',
-    opacity: 0.9
+    opacity: 0.9,
+    marginTop: 50
   },
   artistButton: {
     backgroundColor: '#473863',
